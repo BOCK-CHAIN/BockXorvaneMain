@@ -72,7 +72,7 @@ export default function PricingPlans({}: Props) {
                     "flex flex-col justify-between px-3 pb-5 rounded-2xl shadow-sm divide-y divide-zinc-600 bg-zinc-100  dark:bg-zinc-900",
                     {
                       "border-2 border-orange dark:border-cyan-400":
-                        product.title === "Enterprise",
+                        product.title === "Starter",
                     },
                     "flex-1",
                     "basis-1/3",
