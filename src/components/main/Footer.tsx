@@ -14,13 +14,13 @@ export default function Footer() {
             href="/"
             className="flex items-center flex-initial font-bold lg:mr-24"
           >
-            <span className="mr-2 border rounded-full border-gray-300 dark:border-zinc-700">
+            <span className="mr-2 border rounded-full border-gray-300 dark:border-zinc-700 px-4 py-2" >
               <Image
                 src={"/Xorvane-svg.svg"}
-                width={80}
-                height={40}
+                width={100}
+                height={50}
                 alt="BockLogo"
-                className="object-cover object-center dark:invert"
+                className="min-h-7 min-w-24"
               />
             </span>
           </Link>
@@ -32,9 +32,9 @@ export default function Footer() {
                 className="col-span-1 md:col-span-2 w-1/2 md:w-fit my-2"
                 key={index}
               >
-                  <p className="py-3 md:py-0 md:pb-4 font-bold text-gray-800 dark:text-white transition duration-150 ease-in-out hover:text-gray-500 dark:hover:text-zinc-200">
-                    {item.title}
-                  </p>
+                <p className="py-3 md:py-0 md:pb-4 font-bold text-gray-800 dark:text-white transition duration-150 ease-in-out hover:text-gray-500 dark:hover:text-zinc-200">
+                  {item.title}
+                </p>
                 <ul className="flex flex-col flex-initial md:flex-1">
                   {item.items.map((name, ind) => {
                     return (
@@ -42,6 +42,12 @@ export default function Footer() {
                         <Link
                           key={ind}
                           href={name.href || "/"}
+                          target={item.title === "Legal" ? "_self" : "_blank"}
+                          rel={
+                            item.title === "Legal"
+                              ? undefined
+                              : "noopener noreferrer"
+                          }
                           className="py-3 md:py-0 md:pb-3 font-normal text-gray-800 dark:text-gray-400 transition duration-150 ease-in-out hover:text-gray-500 dark:hover:text-zinc-200"
                         >
                           {name.comp}

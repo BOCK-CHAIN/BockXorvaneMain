@@ -1,6 +1,6 @@
 export const products = [{
   id: "1",
-  title: "Starter",
+  title: "Pro",
   description: "Perfect for individuals getting started with SaaS solutions.",
   prices: [
     {
@@ -31,7 +31,7 @@ export const services = [
     features: ["Low latency", "Cloud recording", "Up to 10 participants"],
   },
   {
-    id: "4",
+    id: "2",
     title: "FlowAutomator",
     description: "Automate your workflows effortlessly.",
     services: [
@@ -43,7 +43,7 @@ export const services = [
     features: ["Unlimited workflows", "Team collaboration", "Error tracking"],
   },
   {
-    id: "5",
+    id: "3",
     title: "WebStudio",
     description: "Design and launch websites with ease.",
     webUrl: "http://localhost:3002",
@@ -58,15 +58,15 @@ export const FooterItems = [
     items: [
       {
         comp: "About Us",
-        href: "/about",
+        href: "https://bockbharath.com/aboutus.html",
       },
       {
         comp: "Employees & SOPs",
-        href: "/employees-sops",
+        href: "https://bockbharath.com/sop.html",
       },
       {
         comp: "Progress",
-        href: "/progress",
+        href: "https://bockbharath.com/progress.html",
       },
     ],
   },
@@ -75,27 +75,27 @@ export const FooterItems = [
     items: [
       {
         comp: "Bock Automotive",
-        href: "/bock-automotive",
+        href: "https://automotive.bockbharath.com/",
       },
       {
         comp: "Bock Foods",
-        href: "/bock-foods",
+        href: "https://foods.bockbharath.com/",
       },
       {
         comp: "Bock Space",
-        href: "/bock-space",
+        href: "https://space.bockbharath.com/",
       },
       {
         comp: "Bock AI",
-        href: "/bock-ai",
+        href: "https://ai.bockbharath.com/",
       },
       {
         comp: "Bock Health",
-        href: "/bock-health",
+        href: "https://health.bockbharath.com/",
       },
       {
         comp: "Bock Chain",
-        href: "/bock-chain",
+        href: "https://chain.bockbharath.com/",
       },
     ],
   },
@@ -104,27 +104,27 @@ export const FooterItems = [
     items: [
       {
         comp: "Internships",
-        href: "/internships",
+        href: "https://bockbharath.com/bock-internship-program.html",
       },
       {
         comp: "Procedure",
-        href: "/procedure",
+        href: "https://bockbharath.com/joinus.html",
       },
       {
         comp: "Recruitment",
-        href: "/recruitment",
+        href: "https://bockbharath.com/joinus.html",
       },
       {
         comp: "Benefits",
-        href: "/benefits",
+        href: "https://bockbharath.com/joinus.html",
       },
       {
         comp: "Jobs",
-        href: "/jobs",
+        href: "https://bockbharath.com/joinus.html",
       },
       {
         comp: "FAQ's",
-        href: "/faqs",
+        href: "https://bockbharath.com/joinus.html",
       },
     ],
   },
