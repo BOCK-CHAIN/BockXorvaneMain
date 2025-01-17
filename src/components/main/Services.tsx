@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 // import { useRouter } from "next/navigation";
-import { services } from "./_components/constants";
+import { services } from "../_components/constants";
 
 
 export default function Services() {

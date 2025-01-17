@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ToggleTheme } from "./_components/ToggleTheme";
+import { ToggleTheme } from "../_components/ToggleTheme";
 import { useUser } from "@clerk/nextjs";
-import NavButton from "./_components/NavButton";
+import NavButton from "../_components/NavButton";
 import { SignOutButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FooterItems } from "./_components/constants";
+import { FooterItems } from "../_components/constants";
 
 export default function Footer() {
   return (

@@ -1,7 +1,7 @@
-import PricingPlans from "@/components/PricingPlans";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import Footer from "@/components/Footer";
+import PricingPlans from "@/components/main/PricingPlans";
+import Hero from "@/components/main/Hero";
+import Services from "@/components/main/Services";
+import Footer from "@/components/main/Footer";
 
 export default function Home() {
   return (

@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { products } from "./_components/constants";
+import { products } from "../_components/constants";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Check } from "lucide-react";
 
 type BillingInterval = "lifetime" | "year" | "month";
