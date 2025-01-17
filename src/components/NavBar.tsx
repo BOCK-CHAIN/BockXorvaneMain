@@ -44,7 +44,6 @@ export default function NavBar({}: Props) {
   useEffect(() => {
     if (typeof window !== "undefined" && pathname === "/") {
       const hash = window.location.hash.replace("#", ""); // Get the hash without the `#`
-      console.log(hash);
       if (hash) {
         const section = document.getElementById(hash);
         if (section) {
@@ -53,6 +52,8 @@ export default function NavBar({}: Props) {
           window.scrollTo({ top: topOffset, behavior: "smooth" });
         }
         router.replace(pathname, undefined);
+      }else{
+        setActiveSection("hero");
       }
     }
   }, [pathname, router]);
@@ -64,7 +65,7 @@ export default function NavBar({}: Props) {
     }
     if (section) {
       const topOffset =
-        section.getBoundingClientRect().top + window.scrollY - 30;
+        section.getBoundingClientRect().top + window.scrollY-30;
       window.scrollTo({ top: topOffset, behavior: "smooth" });
     }
   };
@@ -77,13 +78,14 @@ export default function NavBar({}: Props) {
         )}
       >
         <div className="flex justify-between px-2 lg:px-0 lg:justify-around items-center  ">
-          <div className="flex justify-center items-center md:gap-2 lg:gap-8">
+          <div className="flex justify-center items-center md:gap-2 lg:gap-8 py-2">
             <Image
-              src={"https://bockbharath.com/images/Bockmain.svg"}
-              width={80}
-              height={40}
+              src={'/Xorvane-svg.svg'}
+              width={100}
+              height={140}
               alt="BockLogo"
-              className="object-cover object-center dark:filter dark:invert"
+              className="object-cover object-center py-4 "
+              onClick={()=>router.push('/')}
             />
             <ul className="hidden md:flex justify-center items-center font-medium text-[#09090bcc] dark:text-[#fafafacc]">
               <li
