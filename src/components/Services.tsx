@@ -5,13 +5,12 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { services } from "./_components/constants";
 
-type Props = {};
 
-export default function Services({}: Props) {
-  const router = useRouter();
+export default function Services() {
+  // const router = useRouter();
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -5,11 +5,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 
-type Props = {};
-
-export default function Hero({}: Props) {
+export default function Hero() {
   return (
-    <div id="hero" className="relative bg-gradient-to-br from-white via-gray-100 to-gray-50 text-zinc-800 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white py-16 sm:py-24 lg:py-32 w-full min-h-[100vh] flex items-center">
+    <section id="hero" className="relative bg-gradient-to-br from-white via-gray-100 to-gray-50 text-zinc-800 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white py-16 sm:py-24 lg:py-32 w-full min-h-[100vh] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="w-1/4 hidden">l</div>
         <motion.div 
@@ -55,6 +53,6 @@ export default function Hero({}: Props) {
 
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-gray-900 pointer-events-none"></div>
-    </div>
+    </section>
   );
 }

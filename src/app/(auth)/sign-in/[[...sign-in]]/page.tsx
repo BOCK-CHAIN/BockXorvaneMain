@@ -1,9 +1,8 @@
-import { SignedOut, SignIn, SignInButton } from "@clerk/nextjs";
+import {  SignIn } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
-type Props = {};
 
-export default async function Signin({}: Props) {
+export default async function Signin() {
   const user =await currentUser();
   if(user) return <div>Already Signed In</div>
   return (

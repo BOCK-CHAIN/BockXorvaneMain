@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ToggleTheme } from "./_components/ToggleTheme";
-import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import NavButton from "./_components/NavButton";
 import { SignOutButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 
-type Props = {};
 
-export default function NavBar({}: Props) {
+export default function NavBar() {
   const { user } = useUser();
   const [activeSection, setActiveSection] = useState("");
   const router = useRouter();
@@ -20,12 +18,12 @@ export default function NavBar({}: Props) {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll("section");
-      let currentSection = "hero";
+      let currentSection;
 
       sections.forEach((section) => {
         const sectionTop = section.offsetTop - 100;
         const sectionHeight = section.offsetHeight;
-
+        console.log(section)
         if (
           window.scrollY >= sectionTop &&
           window.scrollY < sectionTop + sectionHeight
@@ -34,7 +32,8 @@ export default function NavBar({}: Props) {
         }
       });
 
-      setActiveSection(currentSection);
+      console.log(currentSection)
+      setActiveSection(currentSection || "");
     };
 
     window.addEventListener("scroll", handleScroll);

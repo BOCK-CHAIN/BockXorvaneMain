@@ -16,7 +16,7 @@ export default function Footer() {
           >
             <span className="mr-2 border rounded-full border-gray-300 dark:border-zinc-700">
               <Image
-                src={"https://bockbharath.com/images/Bockmain.svg"}
+                src={"/Xorvane-svg.svg"}
                 width={80}
                 height={40}
                 alt="BockLogo"

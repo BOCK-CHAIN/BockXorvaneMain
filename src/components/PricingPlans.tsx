@@ -1,5 +1,4 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { products } from "./_components/constants";
 import { cn } from "@/lib/utils";
@@ -7,13 +6,11 @@ import { Button } from "./ui/button";
 import { Check } from "lucide-react";
 
 type BillingInterval = "lifetime" | "year" | "month";
-type Props = {};
 
-export default function PricingPlans({}: Props) {
-  const router = useRouter();
+export default function PricingPlans() {
+  // const router = useRouter();
   const [billingInterval, setBillingInterval] =
     useState<BillingInterval>("month");
-  const currentPath = usePathname();
   return (
     <>
       <section

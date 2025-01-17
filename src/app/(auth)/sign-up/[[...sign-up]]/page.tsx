@@ -3,9 +3,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 
 
-type Props = {};
 
-export default async function SignUpPage({}: Props) {
+export default async function SignUpPage() {
   const user =await currentUser();
   if(user) return <div>Already Signed In</div>
   return (
