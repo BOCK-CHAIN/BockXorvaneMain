@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -7,11 +8,12 @@ import { useUser } from "@clerk/nextjs";
 import NavButton from "../_components/NavButton";
 import { SignOutButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
-
+import { Menu, X } from 'lucide-react';
 
 export default function NavBar() {
   const { user } = useUser();
   const [activeSection, setActiveSection] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -23,7 +25,6 @@ export default function NavBar() {
       sections.forEach((section) => {
         const sectionTop = section.offsetTop - 100;
         const sectionHeight = section.offsetHeight;
-        console.log(section)
         if (
           window.scrollY >= sectionTop &&
           window.scrollY < sectionTop + sectionHeight
@@ -32,7 +33,6 @@ export default function NavBar() {
         }
       });
 
-      console.log(currentSection)
       setActiveSection(currentSection || "");
     };
 
@@ -42,7 +42,7 @@ export default function NavBar() {
 
   useEffect(() => {
     if (typeof window !== "undefined" && pathname === "/") {
-      const hash = window.location.hash.replace("#", ""); // Get the hash without the `#`
+      const hash = window.location.hash.replace("#", "");
       if (hash) {
         const section = document.getElementById(hash);
         if (section) {
@@ -51,7 +51,7 @@ export default function NavBar() {
           window.scrollTo({ top: topOffset, behavior: "smooth" });
         }
         router.replace(pathname, undefined);
-      }else{
+      } else {
         setActiveSection("hero");
       }
     }
@@ -64,9 +64,10 @@ export default function NavBar() {
     }
     if (section) {
       const topOffset =
-        section.getBoundingClientRect().top + window.scrollY-30;
+        section.getBoundingClientRect().top + window.scrollY - 70;
       window.scrollTo({ top: topOffset, behavior: "smooth" });
     }
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -76,15 +77,15 @@ export default function NavBar() {
           "sticky top-0 z-50 w-full text-black dark:text-white border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border"
         )}
       >
-        <div className="flex justify-between px-2 lg:px-0 lg:justify-around items-center  ">
+        <div className="flex justify-between px-4 lg:px-0 lg:justify-around items-center">
           <div className="flex justify-center items-center md:gap-2 lg:gap-8 py-2">
             <Image
               src={'/Xorvane-svg.svg'}
               width={100}
               height={140}
               alt="BockLogo"
-              className="object-cover object-center py-4 "
-              onClick={()=>router.push('/')}
+              className="object-cover object-center py-4 cursor-pointer"
+              onClick={() => router.push('/')}
             />
             <ul className="hidden md:flex justify-center items-center font-medium text-[#09090bcc] dark:text-[#fafafacc]">
               <li
@@ -134,7 +135,7 @@ export default function NavBar() {
             </ul>
           </div>
           <div className="flex gap-6 items-center justify-center">
-            <div className="flex justify-center items-center gap-3">
+            <div className="hidden md:flex justify-center items-center gap-3">
               {!user ? (
                 <>
                   <NavButton
@@ -151,18 +152,79 @@ export default function NavBar() {
               ) : (
                 <>
                   <div>
-                    <div className=" px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground ">
+                    <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
                       <SignOutButton redirectUrl="/" />
                     </div>
                   </div>
                 </>
               )}
-
               <ToggleTheme />
             </div>
+            <button
+              className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
       </div>
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 min-h-[150%] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="pt-16 pb-6 px-4 space-y-4">
+            {["hero", "services", "pricing", "footer"].map((id) => (
+              <button
+                key={id}
+                className={cn(
+                  "block w-full text-left px-3 py-2 rounded-md text-base font-medium",
+                  activeSection === id
+                    ? "bg-accent text-accent-foreground"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+                onClick={() => scrollToSection(id)}
+              >
+                {id === "hero" ? "Home" : id === "footer" ? "Contact Us" : id.charAt(0).toUpperCase() + id.slice(1)}
+              </button>
+            ))}
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-3">
+                {!user ? (
+                  <>
+                    <NavButton
+                      variant={"outline"}
+                      text={"Login"}
+                      href={"/sign-in"}
+                    />
+                    <NavButton
+                      variant={"default"}
+                      text={"Sign-Up"}
+                      href={"/sign-up"}
+                    />
+                  </>
+                ) : (
+                  <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
+                    <SignOutButton redirectUrl="/" />
+                  </div>
+                )}
+                <ToggleTheme />
+              </div>
+            </div>
+          </div>
+          <button
+            className="absolute top-4 right-4 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <X className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+      )}
     </>
   );
 }
+

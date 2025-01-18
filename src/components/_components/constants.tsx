@@ -1,6 +1,7 @@
 
 import { BsInstagram, BsTwitter, BsX, BsYoutube } from "react-icons/bs";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { LiaLinkedin } from "react-icons/lia";
 
 export const products = [{
@@ -148,30 +149,37 @@ export const FooterItems = [
   }
 ];
 
-export const socialMedia=[
+export const socialMedia = [
   {
     name: "Instagram",
-    icon: BsInstagram,
+    icon: <FaInstagram className="w-5 h-5" />,
     href: "https://www.instagram.com/bockbharath",
+    color: "hover:bg-gradient-to-r hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#FDCB58] dark:hover:from-[#833AB4] dark:hover:via-[#B71A1A] dark:hover:to-[#CBAA44]"
   },
   {
     name: "X",
-    icon: BsX,
+    icon: <FaXTwitter className="w-5 h-5" />,
     href: "https://x.com/BockBH",
+    color: "hover:bg-[#1DA1F2] dark:hover:bg-[#1DA1F2]", 
   },
   {
     name: "LinkedIn",
-    icon: LiaLinkedin,
+    icon: <FaLinkedin className="w-5 h-5" />,
     href: "https://www.linkedin.com/company/bockbharath/",
-  },  
+    color: "hover:bg-[#0A66C2] dark:hover:bg-[#0A66C2]", 
+  },
   {
     name: "YouTube",
-    icon: BsYoutube,
+    icon: <FaYoutube className="w-5 h-5" />,
     href: "https://www.youtube.com/@bockbharath",
+    color: "hover:bg-[#FF0000] dark:hover:bg-[#FF0000]", 
   },
   {
     name: "Facebook",
-    icon: FaFacebook,
+    icon: <FaFacebook className="w-5 h-5" />,
     href: "https://www.facebook.com/bockbharath/",
+    color: "hover:bg-[#1877F2] dark:hover:bg-[#1877F2]", 
   },
-]
+];
+
+
