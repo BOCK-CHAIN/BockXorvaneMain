@@ -1,3 +1,8 @@
+
+import { BsInstagram, BsTwitter, BsX, BsYoutube } from "react-icons/bs";
+import { FaFacebook } from "react-icons/fa";
+import { LiaLinkedin } from "react-icons/lia";
+
 export const products = [{
   id: "1",
   title: "Pro",
@@ -140,5 +145,33 @@ export const FooterItems = [
         href: "/terms-of-use",
       },
     ],
-  },
+  }
 ];
+
+export const socialMedia=[
+  {
+    name: "Instagram",
+    icon: BsInstagram,
+    href: "https://www.instagram.com/bockbharath",
+  },
+  {
+    name: "X",
+    icon: BsX,
+    href: "https://x.com/BockBH",
+  },
+  {
+    name: "LinkedIn",
+    icon: LiaLinkedin,
+    href: "https://www.linkedin.com/company/bockbharath/",
+  },  
+  {
+    name: "YouTube",
+    icon: BsYoutube,
+    href: "https://www.youtube.com/@bockbharath",
+  },
+  {
+    name: "Facebook",
+    icon: FaFacebook,
+    href: "https://www.facebook.com/bockbharath/",
+  },
+]
