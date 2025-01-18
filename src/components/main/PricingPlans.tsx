@@ -40,10 +40,9 @@ export default function PricingPlans() {
               Choose the perfect plan for your needs
             </p>
           </div>
-          <div className="flex flex-col md:flex-row justify-between">
-            {/* Left side: Pricing details */}
+          <div className="flex flex-col md:flex-row justify-between gap-4">
             <div className="flex flex-col w-full md:w-1/2">
-              <div className="relative w-full md:w-fit flex self-center mt-6 bg-zinc-100 dark:bg-black rounded-lg p-0.5 border dark:border-zinc-800">
+              <div className="relative w-full sm:w-fit flex self-center mt-6 bg-zinc-100 dark:bg-black rounded-lg p-0.5 border dark:border-zinc-800">
                 <button
                   onClick={() => setBillingInterval("month")}
                   type="button"
@@ -110,12 +109,9 @@ export default function PricingPlans() {
                 })}
               </div>
             </div>
-
-            {/* Right side: Services */}
-            <div className="w-full md:w-1/2 self-center mt-6 flex sm:mt-8">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-black dark:text-white mb-4">
-                  Services Included
+            <div className="w-full sm:w-3/4 md:w-1/2 flex flex-col space-y-4 ">
+                <h3 className="text-2xl font-semibold mt-6 sm:mt-8 p-0.5 text-black dark:text-white mb-4">
+                  Services Included:
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start text-black dark:text-zinc-300">
@@ -137,7 +133,6 @@ export default function PricingPlans() {
                     </div>
                   </li>
                 </ul>
-              </div>
             </div>
           </div>
         </div>
