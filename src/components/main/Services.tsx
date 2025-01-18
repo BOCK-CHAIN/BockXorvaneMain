@@ -2,16 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-// import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { services } from "../_components/constants";
 
-
 export default function Services() {
-  // const router = useRouter();
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -33,9 +30,9 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="z-10 snap-center min-h-screen flex items-center bg-gradient-to-br from-neutral-100 to-neutral-200 border-neutral-300 mx-4 my-8 rounded-3xl dark:from-neutral-900 dark:to-neutral-800 dark:border-neutral-700"
+      className="z-10 snap-center min-h-[90vh] flex items-center bg-gradient-to-br from-neutral-100 to-neutral-200 border-neutral-300 mx-4 my-8 rounded-3xl dark:from-neutral-900 dark:to-neutral-800 dark:border-neutral-700"
     >
-      <div className="max-w-6xl px-4 py-12 mx-auto sm:py-16 sm:px-6 lg:px-8">
+      <div className="max-w-7xl px-4 py-12 mx-auto sm:py-16 sm:px-6 lg:px-8">
         <motion.div
           className="sm:flex sm:flex-col sm:align-center"
           initial="hidden"
@@ -43,7 +40,7 @@ export default function Services() {
           variants={containerVariants}
         >
           <motion.h1
-            className="text-4xl font-bold text-neutral-800 dark:text-neutral-100 sm:text-center sm:text-5xl"
+            className="text-3xl md:text-4xl font-bold text-neutral-800 dark:text-neutral-100 sm:text-center sm:text-5xl"
             variants={itemVariants}
           >
             Our Services
@@ -56,7 +53,7 @@ export default function Services() {
             needs.
           </motion.p>
           <motion.div
-            className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
           >
             {services.map((service, index) => (
@@ -67,26 +64,31 @@ export default function Services() {
                 whileHover={{ scale: 1.03 }}
               >
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">
+                      {service.title}
+                    </h3>
+                    <service.icon className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <p className="text-neutral-600 dark:text-neutral-400">
                     {service.description}
                   </p>
-                  <ul className="flex flex-col justify-start mt-4 gap-2">
-                    {service.services &&
-                      service.services.map((item, index) => (
-                        <motion.li
-                          key={index}
-                          className="flex justify-start items-center gap-2 text-neutral-700 dark:text-neutral-300"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                        >
-                          <Check className="text-green-500 dark:text-green-400" />
-                          <p>{item}</p>
-                        </motion.li>
-                      ))}
+                  <h4 className="font-semibold mt-4 mb-2 text-neutral-700 dark:text-neutral-300">
+                    Key Features:
+                  </h4>
+                  <ul className="flex flex-col justify-start gap-2">
+                    {service.features.map((feature, index) => (
+                      <motion.li
+                        key={index}
+                        className="flex justify-start items-center gap-2 text-neutral-700 dark:text-neutral-300"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Check className="text-green-500 dark:text-green-400 flex-shrink-0" />
+                        <p>{feature}</p>
+                      </motion.li>
+                    ))}
                   </ul>
                 </div>
                 <Button
@@ -95,10 +97,10 @@ export default function Services() {
                     if (service.webUrl) window.open(service.webUrl, "_blank");
                   }}
                   className={cn(
-                    "w-full mt-8 bg-neutral-700 text-neutral-100 hover:bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-800 dark:hover:bg-neutral-300 transition-colors duration-300"
+                    "w-full mt-8 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors duration-300"
                   )}
                 >
-                  Check it out
+                  Try {service.title}
                 </Button>
               </motion.div>
             ))}
@@ -108,3 +110,4 @@ export default function Services() {
     </section>
   );
 }
+

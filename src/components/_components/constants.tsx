@@ -1,60 +1,46 @@
-
-import { BsInstagram, BsTwitter, BsX, BsYoutube } from "react-icons/bs";
+import { Laptop, Zap, Users } from 'lucide-react';
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { LiaLinkedin } from "react-icons/lia";
 
-export const products = [{
-  id: "1",
-  title: "Pro",
-  description: "Perfect for individuals getting started with SaaS solutions.",
-  prices: [
+export const prices = [
     {
+      id: "1",
       interval: "month",
       currency: "INR",
       unit_amount: 20000,
     },
     {
+      id: "2",
       interval: "year",
       currency: "INR",
       unit_amount: 200000,
-    },
-  ],
-  services: ["Realtime Video Sharing", "Automation Builder", "Website Builder"],
-}];
+    }
+];
 
 export const services = [
   {
     id: "1",
-    title: "RealTimeShare",
-    description: "Perfect for collaborative video streaming.",
-    services: [
-      "Realtime video streaming",
-      "Screen sharing",
-      "Collaborative recording",
-    ],
-    webUrl: "http://localhost:3003",
-    features: ["Low latency", "Cloud recording", "Up to 10 participants"],
+    title: "WebBuild",
+    description: "Design and launch websites with ease.",
+    webUrl: "http://localhost:3002",
+    icon: Laptop,
+    features: ["Drag-and-drop editor", "Responsive designs", "Team integration"],
   },
   {
     id: "2",
-    title: "FlowAutomator",
+    title: "AutoWork",
     description: "Automate your workflows effortlessly.",
-    services: [
-      "Drag-and-drop automation",
-      "Workflow templates",
-      "Integration library",
-    ],
     webUrl: "http://localhost:3001",
-    features: ["Unlimited workflows", "Team collaboration", "Error tracking"],
+    icon: Zap,
+    features: ["Unlimited workflows", "AI-powered suggestions", "Advanced analytics"],
   },
   {
     id: "3",
-    title: "WebStudio",
-    description: "Design and launch websites with ease.",
-    webUrl: "http://localhost:3002",
-    services: ["Custom templates", "SEO tools", "E-commerce integration"],
-    features: ["Drag-and-drop editor", "Responsive designs", "24/7 support"],
+    title: "WorkMan",
+    description: "Collaborate and manage projects seamlessly.",
+    webUrl: "http://localhost:3003",
+    icon: Users,
+    features: ["Team collaboration", "Video conferencing", "Document version control"],
   },
 ];
 

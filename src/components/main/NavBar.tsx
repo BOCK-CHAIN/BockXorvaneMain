@@ -175,7 +175,7 @@ export default function NavBar() {
         </div>
       </div>
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 min-h-[150%] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="md:hidden fixed inset-0 z-50 min-h-fit bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="pt-16 pb-6 px-4 space-y-4">
             {["hero", "services", "pricing", "footer"].map((id) => (
               <button
