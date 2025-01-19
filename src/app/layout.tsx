@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { DM_Sans } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import queryclient from "@/client/queryClient";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import ConfigureAmplifyClientSide from "./amplify-cognito-config";
 
 const font = DM_Sans({ subsets: ["latin"], display: "swap" });
 
@@ -17,19 +22,23 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <ClerkProvider>
-      <html lang="en suppressHydrationWarning">
-        <body className={font.className}>
+    <html lang="en suppressHydrationWarning">
+      <body className={font.className}>
+        <>
+          <ConfigureAmplifyClientSide />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <QueryClientProvider client={queryclient}>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </>
+      </body>
+    </html>
   );
 }

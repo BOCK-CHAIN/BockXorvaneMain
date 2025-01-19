@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Check } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import { services } from "../_components/constants";
 
 export default function Services() {

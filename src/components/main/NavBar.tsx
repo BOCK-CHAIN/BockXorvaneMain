@@ -11,7 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from 'lucide-react';
 
 export default function NavBar() {
-  const { user } = useUser();
+  // const { user } = useUser();
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -136,17 +136,17 @@ export default function NavBar() {
           </div>
           <div className="flex gap-6 items-center justify-center">
             <div className="hidden md:flex justify-center items-center gap-3">
-              {!user ? (
+              {true ? (
                 <>
                   <NavButton
                     variant={"outline"}
                     text={"Login"}
-                    href={"/sign-in"}
+                    href={"/auth/sign-in"}
                   />
                   <NavButton
                     text={"Get Started"}
                     variant="default"
-                    href={"/sign-up"}
+                    href={"/auth/sign-up"}
                   />
                 </>
               ) : (
@@ -193,17 +193,17 @@ export default function NavBar() {
             ))}
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-3">
-                {!user ? (
+                {true ? (
                   <>
                     <NavButton
                       variant={"outline"}
                       text={"Login"}
-                      href={"/sign-in"}
+                      href={"/auth/sign-in"}
                     />
                     <NavButton
                       variant={"default"}
                       text={"Sign-Up"}
-                      href={"/sign-up"}
+                      href={"/auth/sign-up"}
                     />
                   </>
                 ) : (
