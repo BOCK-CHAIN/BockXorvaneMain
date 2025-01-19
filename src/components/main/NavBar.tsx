@@ -92,7 +92,7 @@ export default function NavBar() {
                 className={cn(
                   "px-3 py-2 rounded-full dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer",
                   activeSection === "hero"
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : ""
                 )}
                 onClick={() => scrollToSection("hero")}
@@ -103,7 +103,7 @@ export default function NavBar() {
                 className={cn(
                   "px-3 py-2 rounded-full dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer",
                   activeSection === "services"
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : ""
                 )}
                 onClick={() => scrollToSection("services")}
@@ -114,7 +114,7 @@ export default function NavBar() {
                 className={cn(
                   "px-3 py-2 rounded-full dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer",
                   activeSection === "pricing"
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : ""
                 )}
                 onClick={() => scrollToSection("pricing")}
@@ -125,7 +125,7 @@ export default function NavBar() {
                 className={cn(
                   "px-3 py-2 rounded-full dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer",
                   activeSection === "footer"
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : ""
                 )}
                 onClick={() => scrollToSection("footer")}
@@ -152,7 +152,7 @@ export default function NavBar() {
               ) : (
                 <>
                   <div>
-                    <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
+                    <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-zinc-200 dark:bg-accent hover:text-accent-foreground">
                       <SignOutButton redirectUrl="/" />
                     </div>
                   </div>
@@ -183,7 +183,7 @@ export default function NavBar() {
                 className={cn(
                   "block w-full text-left px-3 py-2 rounded-md text-base font-medium",
                   activeSection === id
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 )}
                 onClick={() => scrollToSection(id)}
@@ -207,7 +207,7 @@ export default function NavBar() {
                     />
                   </>
                 ) : (
-                  <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
+                  <div className="px-4 py-2 rounded-full border border-input bg-background shadow-sm hover:bg-zinc-200 dark:bg-accent hover:text-accent-foreground">
                     <SignOutButton redirectUrl="/" />
                   </div>
                 )}
