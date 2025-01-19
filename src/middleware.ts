@@ -1,48 +1,24 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose"; // Import jwtVerify from jose
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-const AUTHORIZED_DOMAINS = [
-  "localhost:3000",
-  "sub-app1.com",
-  "sub-app2.com",
-  "sub-app3.com",
-];
+import { fetchAuthSession } from "@aws-amplify/core/server";
+import { getCurrentUser } from "@aws-amplify/auth/server";
+import { authenticatedUser } from "./utils/amplify-server-utils";
 
-const COGNITO_JWKS_URL = `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_USER_POOL_ID}/.well-known/jwks.json`;
-
-export async function middleware(req: NextRequest) {
-  const token = req.cookies.get("cognitoToken")?.value;
-  console.log(token)
+export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
-  if (!token) {
-    // return response;
-    return NextResponse.redirect("http://localhost:3000");
-  }
+  const user = await authenticatedUser({ request, response });
+  console.log("user",user);
+  const isOnDashboard = request.nextUrl.pathname.startsWith("/dashboard");
 
-  try {
-    const resp = await fetch(COGNITO_JWKS_URL);
-    const { keys } = await resp.json();
-    const signingKey = keys[0];
-
-    const { payload } = await jwtVerify(token, signingKey);
-
-    if (payload.sub) {
-      response.headers.set("X-User-Id", payload.sub as string);
-    }
-    if (typeof payload !== "string" && payload?.email) {
-      response.headers.set("X-User-Email", payload.email as string);
-    }
+  if (isOnDashboard) {
+    if (!user)
+      return NextResponse.redirect(new URL("/auth/sign-in", request.nextUrl));
     return response;
-  } catch (err) {
-    console.error("Token verification failed:", err);
-    return NextResponse.redirect("https://localhost:3000/auth/sign-in");
   }
+
+  return response;
 }
 
 export const config = {
-  matcher: [
-    '/(api|trpc)(.*)',
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sign-in).*)"],
 };

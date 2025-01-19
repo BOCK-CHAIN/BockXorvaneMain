@@ -42,7 +42,7 @@ export const useSignUpForm = () => {
       setLoading(false);
       onNext((prev) => prev + 1);
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       console.log(error.errors[0].longMessage);
       toast({
         title: "Error",

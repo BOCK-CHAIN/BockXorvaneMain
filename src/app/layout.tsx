@@ -25,7 +25,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en suppressHydrationWarning">
       <body className={font.className}>
         <>
-          <ConfigureAmplifyClientSide />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -33,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             disableTransitionOnChange
           >
             <QueryClientProvider client={queryclient}>
+              <ConfigureAmplifyClientSide />
               {children}
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
