@@ -3,7 +3,6 @@ import { AuthContextProvider } from "@/context/use-auth-context";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Loader } from "../../ui/loader";
-import { useSignUpForm } from "@/hooks/auth/use-sign-up";
 import { useSignInForm } from "@/hooks/auth/use-sign-in";
 
 type Props = {

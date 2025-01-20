@@ -1,3 +1,4 @@
+import { authenticatedUser } from "@/utils/amplify-server-utils";
 import Image from "next/image";
 // import Image from "next/image";
 import { redirect } from "next/navigation";

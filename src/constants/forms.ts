@@ -6,6 +6,7 @@ type TypeProps = {
   label?: string;
   placeholder: string;
   name: string;
+  showPasswordRequirements?: boolean;
 };
 
 export const USER_SIGNUP_FORM: TypeProps[] = [
@@ -29,6 +30,7 @@ export const USER_SIGNUP_FORM: TypeProps[] = [
     placeholder: "Password",
     name: "password",
     type: "password",
+    showPasswordRequirements: true,
   },
   {
     id: "4",
@@ -66,3 +68,30 @@ export const USER_FORGOT_PASSWORD_FORM: TypeProps[] = [
   },
 ];
 
+export const passwordRequirements = [
+  {
+    id: "minLength",
+    label: "At least 8 characters long",
+    test: (password: string) => password?.length >= 8,
+  },
+  {
+    id: "uppercase",
+    label: "Contains an uppercase letter",
+    test: (password: string) => password && /[A-Z]/.test(password),
+  },
+  {
+    id: "lowercase",
+    label: "Contains a lowercase letter",
+    test: (password: string) => password &&/[a-z]/.test(password),
+  },
+  {
+    id: "number",
+    label: "Contains a number",
+    test: (password: string) =>password && /\d/.test(password),
+  },
+  {
+    id: "symbol",
+    label: "Contains a special character (e.g., !@#$%)",
+    test: (password: string) =>password && /[^a-zA-Z0-9]/.test(password),
+  },
+];

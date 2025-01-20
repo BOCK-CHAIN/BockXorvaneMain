@@ -4,13 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { confirmSignUp, resendSignUpCode, signUp } from "aws-amplify/auth";
-// import { onCompleteUserRegistration } from "@/actions/auth";
-import { useToast } from "../use-toast";
+import {
+  autoSignIn,
+  confirmSignUp,
+  resendSignUpCode,
+  signUp,
+} from "aws-amplify/auth";
 import { z } from "zod";
+import { toast } from "sonner";
+import { handleAuthError } from "../errors";
 
 export const useSignUpForm = () => {
-  const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const methods = useForm<z.infer<typeof UserSignUpSchema>>({
@@ -41,34 +45,25 @@ export const useSignUpForm = () => {
       console.log("hello", isSignUpComplete, userId, nextStep);
       setLoading(false);
       onNext((prev) => prev + 1);
-    } catch (error: any) {
-      console.log(error);
-      console.log(error.errors[0].longMessage);
-      toast({
-        title: "Error",
-        description: error.errors[0].longMessage,
-        duration: 3000,
-      });
+    } catch (error) {
+      const err = error as Error;
+      handleAuthError(err, router);
+      console.log(err);
+      setLoading(false);
     }
   };
 
   const handleResendCode = async (email: string) => {
     try {
+      setLoading(true);
       await resendSignUpCode({
         username: email,
       });
-      toast({
-        title: "Success",
-        description: "Code resent successfully",
-        duration: 3000,
-      });
-    } catch (err: any) {
-      console.log(err.errors[0].longMessage);
-      toast({
-        title: "Error",
-        description: err.errors[0].longMessage,
-        duration: 3000,
-      });
+      toast.success("Code sent successfully", { duration: 3000 });
+      setLoading(false);
+    } catch (error: any) {
+      handleAuthError(error, router);
+      setLoading(false);
     }
   };
 
@@ -80,22 +75,13 @@ export const useSignUpForm = () => {
           username: values.email,
           confirmationCode: values.otp,
         });
-
-        if (isSignUpComplete) {
-          toast({
-            title: "Success",
-            description: "Sign up successful",
-            duration: 3000,
-          });
-          setLoading(true);
-          router.push("/dashboard");
-        }
-        router.push("/auth/sign-in");
+        autoSignIn();
+        router.push("/dashboard");
+        setLoading(false);
       } catch (error: any) {
-        toast({
-          title: "Error",
-          description: error.errors[0].longMessage,
-        });
+        const err = error as Error;
+        handleAuthError(err, router);
+        setLoading(false);
       }
     }
   );

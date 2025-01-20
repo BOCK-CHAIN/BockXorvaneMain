@@ -12,25 +12,36 @@ export const UserSignUpSchema: ZodType<UserSignUpProps> = z
   .object({
     fullname: z
       .string()
-      .min(4, { message: "your full name must be atleast 4 characters long" }),
+      .min(4, { message: "Your full name must be at least 4 characters long" }),
     email: z.string().email({ message: "Incorrect email format" }),
     password: z
       .string()
-      .min(8, { message: "Your password must be atleast 8 characters long" })
+      .min(8, { message: "Your password must be at least 8 characters long" })
       .max(64, {
-        message: "Your password can not be longer then 64 characters long",
+        message: "Your password cannot be longer than 64 characters",
+      })
+      .regex(/[A-Z]/, {
+        message: "Your password must contain an uppercase letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Your password must contain a lowercase letter",
+      })
+      .regex(/\d/, { message: "Your password must contain a number" })
+      .regex(/[^a-zA-Z0-9]/, {
+        message: "Your password must contain a symbol",
       }),
     confirmPassword: z.string(),
-    otp: z.string().min(6, { message: "You must enter a 6 digit code" }),
+    otp: z.string().length(6, { message: "You must enter a 6-digit code" }),
   })
   .refine((schema) => schema.password === schema.confirmPassword, {
-    message: "passwords do not match",
-    path: ["confirmPassword"],
+    message: "Passwords do not match",
+    path: ["confirmPassword"], // Error is shown under confirmPassword
   });
 
 export type UserLoginProps = {
   email: string;
   password: string;
+  otp?: string;
 };
 
 export const UserLoginSchema: ZodType<UserLoginProps> = z.object({
@@ -41,4 +52,5 @@ export const UserLoginSchema: ZodType<UserLoginProps> = z.object({
     .max(64, {
       message: "Your password can not be longer then 64 characters long",
     }),
+  otp: z.string().length(6, { message: "You must enter a 6-digit code" }),
 });

@@ -1,9 +1,11 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorMessage } from "@hookform/error-message";
-import React from "react";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import React, { useState } from "react";
+import { FieldErrors, FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
+import { passwordRequirements } from "@/constants/forms";
+import { Check, X } from "lucide-react";
 
 type Props = {
   type: "text" | "email" | "password" | "number";
@@ -15,14 +17,17 @@ type Props = {
   name: string;
   errors: FieldErrors<FieldValues>;
   lines?: number;
+  showPasswordRequirements?: boolean;
   form?: string;
   defaultValue?: string;
+  watch?: UseFormWatch<FieldValues>;
 };
 
 const FormGenerator = ({
   errors,
   inputType,
   name,
+  showPasswordRequirements,
   placeholder,
   defaultValue,
   register,
@@ -31,7 +36,10 @@ const FormGenerator = ({
   label,
   lines,
   options,
+  watch
 }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isBlurred,setIsBlurred] = useState(false)
   switch (inputType) {
     case "input":
     default:
@@ -49,8 +57,10 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsBlurred(true)}
           />
-          <ErrorMessage
+          {!showPasswordRequirements ? <ErrorMessage
             errors={errors}
             name={name}
             render={({ message }) => (
@@ -58,7 +68,30 @@ const FormGenerator = ({
                 {message === "Required" ? "" : message}
               </p>
             )}
-          />
+          /> :
+            <>
+              {isFocused &&
+                <ul className="mt-2 space-y-1 transition-opacity duration-200 ">
+                  {passwordRequirements.map((requirement) => {
+                    const isMet = requirement.test(watch ? watch(name) : "")
+                    return (
+                      <li
+                        key={requirement.id}
+                        className={`flex items-center text-sm ${isMet ? "text-green-400" : isBlurred?"text-red-400":"text-gray-400"}`}
+                      >
+                        {isMet ? (
+                          <Check className="w-4 h-4 mr-2 flex-shrink-0" />
+                        ) : (
+                          <X className="w-4 h-4 mr-2 flex-shrink-0" />
+                        )}
+                        <span>{requirement.label}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              }
+            </>
+          }
         </Label>
       );
     case "select":

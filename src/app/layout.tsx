@@ -8,6 +8,7 @@ import {
 import queryclient from "@/client/queryClient";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import ConfigureAmplifyClientSide from "./amplify-cognito-config";
+import { Toaster } from "@/components/ui/sonner"
 
 const font = DM_Sans({ subsets: ["latin"], display: "swap" });
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <QueryClientProvider client={queryclient}>
               <ConfigureAmplifyClientSide />
               {children}
+              <Toaster richColors />
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </ThemeProvider>

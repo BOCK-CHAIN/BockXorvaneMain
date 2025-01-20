@@ -18,6 +18,7 @@ const OTPForm = dynamic(() => import('./otp-form'), {
 const RegistrationFormStep = () => {
     const {
         register,
+        watch,
         formState: { errors },
         setValue,
     } = useFormContext()
@@ -29,6 +30,7 @@ const RegistrationFormStep = () => {
         case 1:
             return (
                 <DetailForm
+                    watch={watch}
                     errors={errors}
                     register={register}
                 />
