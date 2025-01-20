@@ -1,10 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import { FieldErrors, FieldValues, useFormContext, UseFormRegister } from 'react-hook-form'
-import FormGenerator from '../form-generator'
-import { USER_LOGIN_FORM } from '@/constants/forms'
+import { useFormContext } from 'react-hook-form'
 import { useAuthContextHook } from '@/context/use-auth-context'
-import AccountDetailsForm from './details-form'
 import dynamic from 'next/dynamic'
 import { Spinner } from '@/components/ui/spinner'
 

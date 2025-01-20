@@ -10,7 +10,6 @@ export const useQueryData = (
   queryFn: QueryFunction,
   enabled?: Enabled
 ) => {
-  if (enabled) console.log("enabled", enabled);
   const { data, isPending, isLoading, isFetched, refetch, isFetching } =
     useQuery({
       queryKey,

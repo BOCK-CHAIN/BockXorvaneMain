@@ -1,7 +1,7 @@
 import React from 'react'
-import { FieldErrors, FieldValues, UseFormRegister, UseFormWatch } from 'react-hook-form'
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import FormGenerator from '../form-generator'
-import { USER_LOGIN_FORM, USER_SIGNUP_FORM } from '@/constants/forms'
+import { USER_LOGIN_FORM } from '@/constants/forms'
 
 type Props = {
     register: UseFormRegister<FieldValues>

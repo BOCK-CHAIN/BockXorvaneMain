@@ -3,10 +3,10 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { signOut } from "aws-amplify/auth"
 import { useRouter } from 'next/navigation'
+import { handleAuthError } from '@/hooks/errors'
 
-type Props = {}
 
-export default function page({ }: Props) {
+export default function Page() {
   const router = useRouter();
   const signout = async () => {
     try {
@@ -14,7 +14,7 @@ export default function page({ }: Props) {
       router.refresh();
       router.push("/auth/sign-in")
     } catch (err) {
-      console.log(err)
+      handleAuthError(err as Error, router)
     }
   }
 

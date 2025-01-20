@@ -1,7 +1,7 @@
 "use client";
 
 import { authConfig } from "@/constants/authConfig";
-import { Amplify, type ResourcesConfig } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 
 Amplify.configure(
   {

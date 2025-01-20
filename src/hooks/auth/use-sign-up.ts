@@ -29,7 +29,6 @@ export const useSignUpForm = () => {
     onNext: React.Dispatch<React.SetStateAction<number>>
   ) => {
     try {
-      console.log(email, password, name);
       setLoading(true);
       const { isSignUpComplete, userId, nextStep } = await signUp({
         username: email,
@@ -42,13 +41,11 @@ export const useSignUpForm = () => {
           autoSignIn: true,
         },
       });
-      console.log("hello", isSignUpComplete, userId, nextStep);
       setLoading(false);
       onNext((prev) => prev + 1);
     } catch (error) {
       const err = error as Error;
       handleAuthError(err, router);
-      console.log(err);
       setLoading(false);
     }
   };
@@ -71,7 +68,7 @@ export const useSignUpForm = () => {
     async (values: UserSignUpProps) => {
       try {
         setLoading(true);
-        const { isSignUpComplete, nextStep } = await confirmSignUp({
+        await confirmSignUp({
           username: values.email,
           confirmationCode: values.otp,
         });

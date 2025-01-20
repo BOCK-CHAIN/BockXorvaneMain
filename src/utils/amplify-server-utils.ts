@@ -13,20 +13,20 @@ export async function authenticatedUser(context: NextServer.Context) {
     nextServerContext: context,
     operation: async (contextSpec) => {
       try {
-        let session = await fetchAuthSession(contextSpec);
+        const session = await fetchAuthSession(contextSpec);
         if (!session.tokens) {
           return;
         }
-        let user = {
+        const user = {
           ...(await getCurrentUser(contextSpec)),
           isAdmin: false,
         };
-        let groups = session.tokens.accessToken.payload["cognito:groups"];
-        // @ts-ignore
+        const groups = session.tokens.accessToken.payload["cognito:groups"];
+        // @ts-expect-error
         user.isAdmin = Boolean(groups && groups.includes("Admin"));
         return user;
       } catch (error) {
-        console.log("Error",error);
+        console.log("Error in gettting user",error);
       }
     },
   });

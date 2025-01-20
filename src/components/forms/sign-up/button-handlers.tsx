@@ -52,7 +52,6 @@ const ButtonHandler = () => {
               "password",
               "confirmPassword",
             ]);
-            console.log(isValid)
             if (isValid)
               onGenerateOTP(
                 getValues("email"),

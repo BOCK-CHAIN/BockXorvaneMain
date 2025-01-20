@@ -50,7 +50,6 @@ const ButtonHandler = () => {
                             "email",
                             "password"
                         ]);
-                        console.log(isValid)
                         if (isValid)
                             onLogin(
                                 getValues("email"),

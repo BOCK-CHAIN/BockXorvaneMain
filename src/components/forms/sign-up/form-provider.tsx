@@ -11,7 +11,6 @@ type Props = {
 
 const SignUpFormProvider = ({ children }: Props) => {
   const { methods, onHandleSubmit, loading } = useSignUpForm();
-  console.log("laoding",loading)
   return (
     <AuthContextProvider>
       <FormProvider {...methods}>

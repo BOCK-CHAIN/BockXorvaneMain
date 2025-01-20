@@ -2,14 +2,13 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Loader } from "@/components/ui/loader";
 import { handleAuthError } from "@/hooks/errors";
-import { autoSignIn, confirmResetPassword, resetPassword, signIn } from "@aws-amplify/auth";
+import {  confirmResetPassword, resetPassword, signIn } from "@aws-amplify/auth";
 import useAuthuser from "@/hooks/use-auth-user";
 import { toast } from "sonner";
 
@@ -40,7 +39,6 @@ const ForgotPasswordPage: NextPage = () => {
       toast.success("Reset code sent to your email")
       setSuccessfulCreation(true);
     } catch (err) {
-      console.log(err);
       handleAuthError(err as Error, router);
     }
     setLoading(false);
@@ -54,15 +52,14 @@ const ForgotPasswordPage: NextPage = () => {
       });
       toast.success("Code sent successfully", { duration: 3000 });
       setLoading(false)
-    } catch (error: any) {
-      handleAuthError(error, router)
+    } catch (error) {
+      handleAuthError(error as Error, router)
       setLoading(false)
     }
   };
 
   async function reset(e: React.FormEvent) {
     e.preventDefault();
-    console.log(code, password);
     if (!code) {
       setError("Code is required");
       return;
@@ -85,7 +82,6 @@ const ForgotPasswordPage: NextPage = () => {
       toast.success("Password changed successful")
       router.push('/dashboard')
     } catch (err: any) {
-      console.log(err);
       handleAuthError(err as Error, router);
     } finally {
       setLoading(false);
@@ -193,7 +189,8 @@ const ForgotPasswordPage: NextPage = () => {
                   )}
                 </Loader>
                 <p className="text-gray-500 ">
-                  Didn't receive the code?
+
+                  Didn&apos;t receive the code?
                   <Button size={"lg"} onClick={() => handleResendCode(email)} variant={'ghost'} className="hover:bg-transparent px-1 font-bold text-small text-gray-400">
                     Resend code
                   </Button>

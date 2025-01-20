@@ -1,11 +1,10 @@
 'use client'
 import { toast } from "sonner";
-import { useRouter } from "next/router";
 
 export const handleAuthError = (error: any, router: any) => {
   let errorMessage = error.message || "An error occurred. Please try again.";
   let action = null;
-  console.log("error", error)
+  console.log(error)
   switch (error.name) {
     case "PasswordResetRequiredException":
       errorMessage = "Password reset required. Press send to send the code.";

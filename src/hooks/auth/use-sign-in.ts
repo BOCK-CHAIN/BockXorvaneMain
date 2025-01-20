@@ -18,12 +18,10 @@ export const useSignInForm = () => {
 
   const onHandleSubmit = methods.handleSubmit(
     async (values: UserLoginProps) => {
-      console.log(values);
       if (!values.otp) {
         return toast.error("OTP is required", { duration: 3000 });
       }
       try {
-        console.log(values.otp);
         setLoading(true);
         await confirmSignUp({
           username: values.email,
@@ -37,7 +35,6 @@ export const useSignInForm = () => {
         setLoading(false);
       } catch (error: any) {
         const err = error as Error;
-        console.log(err);
         handleAuthError(err, router);
         setLoading(false);
       }
@@ -46,7 +43,6 @@ export const useSignInForm = () => {
 
   const handleResendCode = async (email: string) => {
     try {
-      console.log(email);
       setLoading(true);
       await resendSignUpCode({
         username: email,
@@ -65,9 +61,8 @@ export const useSignInForm = () => {
     onNext: React.Dispatch<React.SetStateAction<number>>
   ) => {
     try {
-      console.log(email);
       setLoading(true);
-      const { isSignedIn, nextStep } = await signIn({
+      const { nextStep } = await signIn({
         username: email,
         password: password,
       });
@@ -87,9 +82,8 @@ export const useSignInForm = () => {
       setLoading(false);
       router.push("/dashboard");
     } catch (error: any) {
-      setLoading(false);
       handleAuthError(error, router);
-      console.log(error);
+      setLoading(false);
     }
   };
 
