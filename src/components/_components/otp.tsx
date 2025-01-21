@@ -14,22 +14,22 @@ const OTPInput = ({ otp, setOtp }: Props) => {
       onChange={(otp) => setOtp(otp)}
     >
       <div className="flex gap-3">
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={0} />
         </div>
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={1} />
         </div>
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={2} />
         </div>
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={3} />
         </div>
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={4} />
         </div>
-        <div>
+        <div className='bg-slate-950'>
           <InputOTPSlot index={5} />
         </div>
       </div>

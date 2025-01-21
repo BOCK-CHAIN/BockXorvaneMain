@@ -7,23 +7,22 @@ import { ToggleTheme } from "../_components/ToggleTheme"
 import NavButton from "../_components/NavButton"
 import { usePathname, useRouter } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import { useAuthuser } from "@/hooks/use-auth-user"
+import { useAuthuser, useCurrentUser } from "@/hooks/use-auth-user"
 import { Button } from "../ui/button"
 import { signOut } from "@aws-amplify/auth"
 import { handleAuthError } from "@/hooks/errors"
 import { useQueryClient } from "@tanstack/react-query"
+import XorvaneLogo from "../_components/XorvaneLogo"
 
 export default function NavBar() {
   // const { user } = useUser();
-  const { user } = useAuthuser()
+  const { user } = useCurrentUser()
   const [currentUser, setUser] = useState<Record<string, any>>()
   const [activeSection, setActiveSection] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const queryClient = useQueryClient();
-  console.log(user)
-  console.log("currentUser", currentUser)
   useEffect(() => {
     if (user) {
       setUser(user)
@@ -55,6 +54,9 @@ export default function NavBar() {
       await signOut()
       await queryClient.invalidateQueries({
         queryKey: ["User"]
+      })
+      await queryClient.invalidateQueries({
+        queryKey: ["AuthUser"]
       })
       router.refresh()
     } catch (err) {
@@ -99,14 +101,7 @@ export default function NavBar() {
       >
         <div className="flex justify-between px-4 lg:px-0 lg:justify-around items-center">
           <div className="flex justify-center items-center md:gap-2 lg:gap-8 py-2">
-            <Image
-              src={"/Xorvane-svg.svg"}
-              width={100}
-              height={140}
-              alt="BockLogo"
-              className="object-cover object-center py-4 cursor-pointer"
-              onClick={() => router.push("/")}
-            />
+            <XorvaneLogo />
             <ul className="hidden md:flex justify-center items-center font-medium text-[#09090bcc] dark:text-[#fafafacc]">
               {["hero", "services", "pricing", "footer"].map((section) => (
                 <li

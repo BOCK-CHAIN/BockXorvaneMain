@@ -4,9 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { confirmSignUp, resendSignUpCode, signIn } from "aws-amplify/auth";
+import {
+  confirmSignUp,
+  getCurrentUser,
+  resendSignUpCode,
+  signIn,
+} from "aws-amplify/auth";
 import { handleAuthError } from "../errors";
 import { toast } from "sonner";
+import { onCompleteUserSignUp } from "@/actions/auth";
 
 export const useSignInForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,10 +33,15 @@ export const useSignInForm = () => {
           username: values.email,
           confirmationCode: values.otp as string,
         });
+        const sign =await onCompleteUserSignUp(values.email);
+        if(sign?.status === 400){
+          throw new Error(sign.message)
+        }
         await signIn({
           username: values.email,
           password: values.password,
         });
+        // console.log(sign)
         setLoading(false);
         router.push("/dashboard");
       } catch (error: any) {

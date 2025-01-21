@@ -74,7 +74,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="flex-1 py-20 md:px-16 w-full h-screen">
+    <div className="flex-1 pt-24 md:px-16 w-full h-screen">
       < div className="flex flex-col h-full gap-3">
         <h2 className="text-gray-400 md:text-4xl font-bold">
           {isResetStep ? "Reset Password" : "Forgot Password?"}

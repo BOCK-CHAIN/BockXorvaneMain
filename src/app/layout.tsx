@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query'
 import queryclient from "@/lib/queryClient";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import ConfigureAmplifyClientSide from "./amplify-cognito-config";
+import ConfigureAmplifyClientSide from "../utils/amplify-cognito-config";
 import { Toaster } from "@/components/ui/sonner"
 
 const font = DM_Sans({ subsets: ["latin"], display: "swap" });

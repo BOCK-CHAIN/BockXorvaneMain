@@ -7,12 +7,14 @@ import { useForm } from "react-hook-form";
 import {
   autoSignIn,
   confirmSignUp,
+  getCurrentUser,
   resendSignUpCode,
   signUp,
 } from "aws-amplify/auth";
 import { z } from "zod";
 import { toast } from "sonner";
 import { handleAuthError } from "../errors";
+import { onCompleteSignupPending, onCompleteUserSignUp } from "@/actions/auth";
 
 export const useSignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +43,9 @@ export const useSignUpForm = () => {
           autoSignIn: true,
         },
       });
+      await onCompleteSignupPending(email, name);
       setLoading(false);
+      toast.success("Code sent successfully to your email", { duration: 3000 });
       onNext((prev) => prev + 1);
     } catch (error) {
       const err = error as Error;
@@ -56,6 +60,7 @@ export const useSignUpForm = () => {
       await resendSignUpCode({
         username: email,
       });
+
       toast.success("Code sent successfully", { duration: 3000 });
       setLoading(false);
     } catch (error: any) {
@@ -72,7 +77,12 @@ export const useSignUpForm = () => {
           username: values.email,
           confirmationCode: values.otp,
         });
-        autoSignIn();
+        const sign = await onCompleteUserSignUp(values.email);
+        if (sign?.status === 400) {
+          throw new Error(sign.message);
+        }
+        await autoSignIn();
+        // console.log(sign);
         router.push("/dashboard");
         setLoading(false);
       } catch (error: any) {
