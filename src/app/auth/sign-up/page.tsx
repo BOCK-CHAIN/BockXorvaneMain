@@ -4,18 +4,19 @@ import SignUpFormProvider from '@/components/forms/sign-up/form-provider'
 import RegistrationFormStep from '@/components/forms/sign-up/registration-step'
 import { useAuthuser } from '@/hooks/use-auth-user'
 import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
-import React, { useEffect, useState } from 'react'
 const SignUp = () => {
-  const [currentUser, setUser] = useState<Record<string, any>>();
   const router = useRouter();
-  const { user, isLoading } = useAuthuser()
-  useEffect(() => {
-    if (user) setUser(user)
-  }, [user])
+  const { authUser } = useAuthuser()
 
-  if (currentUser) {
-    router.push('/dashboard')
+  useEffect(() => {
+    if (authUser) {
+      router.push('/dashboard')
+    }
+  }, [authUser, router])
+
+  if (authUser) {
     return null
   }
 

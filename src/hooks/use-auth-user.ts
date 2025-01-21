@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
 import { fetchCurrentUser } from "@/actions/user";
-import { fetchAuthSession, fetchUserAttributes, getCurrentUser } from "@aws-amplify/auth";
+import {
+  fetchAuthSession,
+  fetchUserAttributes,
+  getCurrentUser,
+} from "@aws-amplify/auth";
 import { useQuery } from "@tanstack/react-query";
 
 export const fetchUserData = async () => {
   const session = await fetchAuthSession();
   if (!session.tokens) {
-    // throw new Error("No session tokens available");
     return null;
   }
 
@@ -20,26 +23,24 @@ export const fetchUserData = async () => {
 };
 
 export const useAuthuser = () => {
-  const query = useQuery(
-    {
-      queryKey: ["AuthUser"], 
-      queryFn: async()=>await fetchUserData(),
-      staleTime: 1000 * 60 * 5, 
-    }
-  );
+  const query = useQuery({
+    queryKey: ["AuthUser"],
+    queryFn: async () => await fetchUserData(),
+    staleTime: 1000 * 60 * 5,
+  });
 
   return { ...query, authUser: query.data };
 };
 
-
-export const useCurrentUser = ()=>{
+export const useCurrentUser = () => {
   const query = useQuery({
-    queryKey: ['User'],
-    queryFn: async()=>{
+    queryKey: ["User"],
+    queryFn: async () => {
       const authUser = await fetchUserData();
-      const user = await fetchCurrentUser(authUser?.email as string);
+      if (!authUser || !authUser.email) return null;
+      const user = await fetchCurrentUser(authUser.email);
       return user;
-    } 
-  })
-  return {...query, user: query.data}
-}
+    },
+  });
+  return { ...query, user: query.data };
+};

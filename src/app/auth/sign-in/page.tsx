@@ -2,27 +2,21 @@
 import ButtonHandler from '@/components/forms/sign-in/button-handlers'
 import SignInFormProvider from '@/components/forms/sign-in/form-provider'
 import SignInDetailForm from '@/components/forms/sign-in/signIn-form'
-import { Loader } from '@/components/ui/loader'
 import { useAuthuser } from '@/hooks/use-auth-user'
 import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
-import React, { useEffect, useState } from 'react'
 const SignIn = () => {
-  const [currentUser, setUser] = useState<Record<string, any>>();
   const router = useRouter();
-  const { user } = useAuthuser()
-  
-  console.log(user)
-  console.log(currentUser)
+  const { authUser } = useAuthuser()
 
   useEffect(() => {
-    if (user) {
-      setUser(user)
+    if (authUser) {
+      router.push('/dashboard')
     }
-  }, [user])
+  }, [authUser,router])
 
-  if (currentUser) {
-    router.push('/dashboard')
+  if (authUser) {
     return null
   }
   return (

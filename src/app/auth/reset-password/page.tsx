@@ -31,14 +31,14 @@ import { Check, X } from "lucide-react";
 const ForgotPasswordPage = () => {
   const [step, setStep] = React.useState<"create" | "reset">("create");
   const router = useRouter();
-  const {user}= useAuthuser();
+  const { authUser } = useAuthuser();
   const [isFocused, setIsFocused] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false);
   const isResetStep = step === "reset";
 
   useEffect(() => {
-    if (user) router.push("/dashboard");
-  }, [user, router]);
+    if (authUser) router.push("/dashboard");
+  }, [authUser, router]);
 
   const form = useForm<ForgotPasswordCreateFormData | ForgotPasswordResetFormData>({
     resolver: zodResolver(isResetStep ? forgotPasswordResetSchema : forgotPasswordCreateSchema),
@@ -124,6 +124,7 @@ const ForgotPasswordPage = () => {
                             className="bg-black"
                             placeholder="Enter a new password"
                             {...field}
+                            type="password"
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => {
                               setIsFocused(false);

@@ -90,7 +90,7 @@ export default function Services() {
                     ))}
                   </ul>
                 </div>
-                <Button
+                {/* <Button
                   type="button"
                   onClick={() => {
                     if (service.webUrl) window.open(service.webUrl, "_blank");
@@ -100,7 +100,7 @@ export default function Services() {
                   )}
                 >
                   Try {service.title}
-                </Button>
+                </Button> */}
               </motion.div>
             ))}
           </motion.div>

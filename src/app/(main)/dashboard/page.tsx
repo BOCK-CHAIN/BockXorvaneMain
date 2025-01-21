@@ -39,6 +39,7 @@ export default function Page() {
       queryKey: ["User"]
     })
   }
+  console.log(currentUser)
 
   if (currentUser && authCurrentUser && !currentUser.cognitoId) {
     addCognitoIdtoDbFn(currentUser.email, authCurrentUser.userId);
@@ -53,7 +54,7 @@ export default function Page() {
       await queryClient.invalidateQueries({
         queryKey: ["AuthUser"]
       })
-      router.refresh();
+      router.push('/auth/sign-in');
     } catch (err) {
       handleAuthError(err as Error, router)
     }
