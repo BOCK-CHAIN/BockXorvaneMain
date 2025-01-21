@@ -30,7 +30,7 @@ export const useSignUpForm = () => {
   ) => {
     try {
       setLoading(true);
-      const { isSignUpComplete, userId, nextStep } = await signUp({
+      await signUp({
         username: email,
         password: password,
         options: {

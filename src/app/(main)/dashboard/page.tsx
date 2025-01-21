@@ -4,15 +4,20 @@ import React from 'react'
 import { signOut } from "aws-amplify/auth"
 import { useRouter } from 'next/navigation'
 import { handleAuthError } from '@/hooks/errors'
+import { useQueryClient } from '@tanstack/react-query'
 
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const signout = async () => {
     try {
       await signOut()
+      await queryClient.invalidateQueries({
+        queryKey:["User"]
+      })
       router.refresh();
-      router.push("/auth/sign-in")
     } catch (err) {
       handleAuthError(err as Error, router)
     }

@@ -24,7 +24,7 @@ const ButtonHandler = () => {
         </Button>
         <p className="text-gray-500 ">
           Didn't receive the code?
-          <Button size={"lg"} onClick={() => handleResendCode(getValues("email"))} variant={'ghost'} className="hover:bg-transparent px-1 font-bold text-small text-gray-400">
+          <Button size={"lg"} onClick={() => handleResendCode(getValues("email"))} variant={'ghost'} className="hover:bg-transparent px-1 font-bold text-base text-gray-400">
             Resend code
           </Button>
         </p>

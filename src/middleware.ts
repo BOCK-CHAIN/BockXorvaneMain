@@ -5,6 +5,15 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   const user = await authenticatedUser({ request, response });
   const isOnDashboard = request.nextUrl.pathname.startsWith("/dashboard");
+  const isOnAuth = request.nextUrl.pathname.startsWith("/auth");
+
+  if (isOnAuth) {
+    if (user) {
+      return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
+    } else {
+      return response;
+    }
+  }
 
   if (isOnDashboard) {
     if (!user)

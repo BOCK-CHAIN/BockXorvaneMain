@@ -21,8 +21,8 @@ export const useSignInForm = () => {
       if (!values.otp) {
         return toast.error("OTP is required", { duration: 3000 });
       }
+      setLoading(true);
       try {
-        setLoading(true);
         await confirmSignUp({
           username: values.email,
           confirmationCode: values.otp as string,
@@ -31,8 +31,8 @@ export const useSignInForm = () => {
           username: values.email,
           password: values.password,
         });
-        router.push("/dashboard");
         setLoading(false);
+        router.push("/dashboard");
       } catch (error: any) {
         const err = error as Error;
         handleAuthError(err, router);

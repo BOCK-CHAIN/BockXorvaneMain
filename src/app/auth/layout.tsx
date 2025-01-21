@@ -8,7 +8,7 @@ type Props = {
 const Layout = async ({ children }: Props) => {
   
   return (
-    <div className="h-screen flex w-full justify-center bg-neutral-900">
+    <div className="h-screen flex flex-row-reverse w-full justify-center bg-neutral-900">
       <div className="w-[600px] ld:w-full  flex flex-col items-start p-6">
         <h1 className="font-extrabold text-2xl text-green-600">ImpactEats</h1>
         {children}

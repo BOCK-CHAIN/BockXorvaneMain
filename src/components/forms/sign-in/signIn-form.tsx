@@ -10,7 +10,7 @@ const DetailForm = dynamic(() => import('./details-form'), {
     loading: () => <Spinner />,
 })
 
-const OTPForm = dynamic(() => import('./otp-form'), {
+const OTPForm = dynamic(() => import('../form-generator/otp-form'), {
     ssr: false,
     loading: () => <Spinner />,
 })
