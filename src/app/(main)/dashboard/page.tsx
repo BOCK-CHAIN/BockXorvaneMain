@@ -7,7 +7,7 @@ import { handleAuthError } from '@/hooks/errors'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuthuser, useCurrentUser } from '@/hooks/use-auth-user'
 import { addCognitoIdtoDb } from '@/actions/auth'
-import { Loader } from '@/components/ui/loader'
+import Loader from '@/components/ui/loader/index'
 
 
 export default function Page() {
@@ -39,10 +39,18 @@ export default function Page() {
       queryKey: ["User"]
     })
   }
-  console.log(currentUser)
 
   if (currentUser && authCurrentUser && !currentUser.cognitoId) {
     addCognitoIdtoDbFn(currentUser.email, authCurrentUser.userId);
+  }
+
+  if (loading) {
+    return <div className='h-screen w-screen justify-center items-center flex'>
+      <Loader state color='purple' />
+    </div>
+  }
+  if (!loading && !authUser) {
+    return router.push('/auth/sign-in');
   }
 
   const signout = async () => {
@@ -61,9 +69,6 @@ export default function Page() {
   }
 
   return (
-    <Loader loading={loading}>
-
-      <Button onClick={() => signout()}>Sign Out</Button>
-    </Loader>
+    <Button onClick={() => signout()}>Sign Out</Button>
   )
 }
