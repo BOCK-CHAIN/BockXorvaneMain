@@ -1,5 +1,6 @@
+"use server";
 import {
-  // ApiError,
+  ApiError,
   Client,
   Environment,
   // LogLevel,
@@ -15,27 +16,49 @@ const client = new Client({
   },
   timeout: 0,
   environment: Environment.Sandbox,
-  // logging: {
-  //   logLevel: LogLevel.Info,
-  //   logRequest: { logBody: true },
-  //   logResponse: { logHeaders: true },
-  // },
 });
 
 const ordersController = new OrdersController(client);
-// const paymentsController = new PaymentsController(client);
 
-export const createOrder = async (cart: any) => {
-  console.log(cart)
+interface bodyProps {
+  email: string;
+  name: string;
+  price: number;
+  description: string;
+}
+
+export const createOrder = async (body: bodyProps) => {
+  // console.log(body);
   const payload = {
     body: {
       intent: CheckoutPaymentIntent.Capture,
+      payment_source: {
+        paypal: {
+          experience_context: {
+            payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
+            landing_page: "NO_PREFERENCE",
+            shipping_preference: "NO_SHIPPING",
+            user_action: "PAY_NOW",
+          },
+          emailAddress: body.email,
+          name: {
+            givenName: body.name,
+          },
+        }
+      },
+      payer: {
+        emailAddress: body.email,
+        name: {
+          givenName: body.name,
+        },
+      },
       purchaseUnits: [
         {
           amount: {
             currencyCode: "USD",
-            value: "100",
+            value: body.price.toString(),
           },
+          description: body.description,
         },
       ],
       prefer: "return=minimal",
@@ -45,46 +68,37 @@ export const createOrder = async (cart: any) => {
   try {
     const { body, ...httpResponse } =
       await ordersController.ordersCreate(payload);
-    // Get more response info...
-    // const { statusCode, headers } = httpResponse;
     return {
-      jsonResponse: JSON.parse(typeof body === 'string' ? body : ''),
+      jsonResponse: JSON.parse(typeof body === "string" ? body : ""),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
-      // const { statusCode, headers } = error;
-      return {
-        jsonResponse: JSON.parse((error as Error).message),
-        httpStatusCode: 404,
-      }
+    return {
+      jsonResponse: JSON.parse((error as Error).message),
+      httpStatusCode: 404,
+    };
   }
 };
 
 export const captureOrder = async (orderID: string) => {
   const collect = {
-      id: orderID,
-      prefer: "return=minimal",
+    id: orderID,
+    prefer: "return=representation",
   };
-
   try {
-      const { body, ...httpResponse } = await ordersController.ordersCapture(
-          collect
-      );
-      // Get more response info...
-      // const { statusCode, headers } = httpResponse;
-      return {
-          jsonResponse: JSON.parse(typeof body === 'string' ? body : ''),
-          httpStatusCode: httpResponse.statusCode,
-      };
+    const { body, ...httpResponse } =
+      await ordersController.ordersCapture(collect);
+    return {
+      jsonResponse: JSON.parse(typeof body === "string" ? body : ""),
+      httpStatusCode: httpResponse.statusCode,
+    };
   } catch (error) {
-      // if (error instanceof ApiError) {
-      //     // const { statusCode, headers } = error;
-      //     throw new Error(error.message);
-      // }
-      return {
-        jsonResponse: JSON.parse((error as Error).message),
-        httpStatusCode: 404,
-      }
+    if (error instanceof ApiError) {
+      throw new Error(error.message);
+    }
+    return {
+      jsonResponse: JSON.parse((error as Error).message),
+      httpStatusCode: 404,
+    };
   }
 };
-

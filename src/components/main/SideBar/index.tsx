@@ -12,8 +12,8 @@ import { useQueryClient } from "@tanstack/react-query"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Subscription", href: "/subscription", icon: BadgePercent },
-  { name: "Profile", href: "/profile", icon: User },
+  { name: "Subscription", href: "/dashboard/subscription", icon: BadgePercent },
+  { name: "Profile", href: "/dashboard/profile", icon: User },
 ]
 
 export function Sidebar() {

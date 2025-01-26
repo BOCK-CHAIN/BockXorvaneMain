@@ -23,14 +23,16 @@ model User {
 }
 
 model Subscription {
-  id             String   @id @default(cuid())
-  userId         String   @unique
-  plan           Plan     @default(NONE)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  planId         String?
-  subscriptionId String?
-  user           User     @relation(fields: [userId], references: [id])
+  id         String    @id @default(cuid())
+  userId     String    @unique
+  plan       Plan      @default(NONE)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  orderId    String?
+  paymentId  String?
+  amount     Float?
+  expiryDate DateTime?
+  user       User      @relation(fields: [userId], references: [id])
 }
 
 model WebBuild {
