@@ -19,7 +19,6 @@ export const onCompleteSignupPending = async (email: string, name: string) => {
 };
 
 export const onCompleteUserSignUp = async (email: string) => {
-  console.log(email);
   if (!email) return { status: 400, message: "Please provide your email" };
   try {
     const user = await prisma.user.update({

@@ -15,7 +15,7 @@ export async function authenticatedUser(context: NextServer.Context) {
       try {
         const session = await fetchAuthSession(contextSpec);
         if (!session.tokens) {
-          return;
+          return null;
         }
         const user = {
           ...(await getCurrentUser(contextSpec)),
@@ -27,6 +27,7 @@ export async function authenticatedUser(context: NextServer.Context) {
         return user;
       } catch (error) {
         console.log("Error in gettting user",error);
+        return null;
       }
     },
   });

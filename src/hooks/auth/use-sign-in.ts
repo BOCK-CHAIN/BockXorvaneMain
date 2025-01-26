@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   confirmSignUp,
-  getCurrentUser,
   resendSignUpCode,
   signIn,
 } from "aws-amplify/auth";
@@ -41,7 +40,6 @@ export const useSignInForm = () => {
           username: values.email,
           password: values.password,
         });
-        // console.log(sign)
         setLoading(false);
         router.push("/dashboard");
       } catch (error: any) {
@@ -90,8 +88,9 @@ export const useSignInForm = () => {
         return;
       }
       toast.success("Signed in successfully", { duration: 3000 });
-      setLoading(false);
+      router.refresh()
       router.push("/dashboard");
+      setLoading(false);
     } catch (error: any) {
       handleAuthError(error, router);
       setLoading(false);

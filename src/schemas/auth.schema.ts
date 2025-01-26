@@ -8,28 +8,30 @@ export type UserSignUpProps = {
   otp: string;
 };
 
+const password = z
+  .string()
+  .min(8, { message: "Your password must be at least 8 characters long" })
+  .max(64, {
+    message: "Your password cannot be longer than 64 characters",
+  })
+  .regex(/[A-Z]/, {
+    message: "Your password must contain an uppercase letter",
+  })
+  .regex(/[a-z]/, {
+    message: "Your password must contain a lowercase letter",
+  })
+  .regex(/\d/, { message: "Your password must contain a number" })
+  .regex(/[^a-zA-Z0-9]/, {
+    message: "Your password must contain a symbol",
+  });
+
 export const UserSignUpSchema: ZodType<UserSignUpProps> = z
   .object({
     fullname: z
       .string()
       .min(4, { message: "Your full name must be at least 4 characters long" }),
     email: z.string().email({ message: "Incorrect email format" }),
-    password: z
-      .string()
-      .min(8, { message: "Your password must be at least 8 characters long" })
-      .max(64, {
-        message: "Your password cannot be longer than 64 characters",
-      })
-      .regex(/[A-Z]/, {
-        message: "Your password must contain an uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Your password must contain a lowercase letter",
-      })
-      .regex(/\d/, { message: "Your password must contain a number" })
-      .regex(/[^a-zA-Z0-9]/, {
-        message: "Your password must contain a symbol",
-      }),
+    password: password,
     confirmPassword: z.string(),
     otp: z.string().length(6, { message: "You must enter a 6-digit code" }),
   })
@@ -61,18 +63,29 @@ export const forgotPasswordCreateSchema = z.object({
 
 export const forgotPasswordResetSchema = z.object({
   email: z.string().email("Invalid email address"),
-  code: z
-    .string()
-    .length(6, { message: "The code must be 6 digits" }),
-  password: z
-    .string()
-    .min(8, { message: "Your password must be at least 8 characters long" })
-    .max(64, { message: "Your password cannot exceed 64 characters" })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-    .regex(/\d/, { message: "Password must contain at least one number" })
-    .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one special character" }),
+  code: z.string().length(6, { message: "The code must be 6 digits" }),
+  password: password,
 });
 
-export type ForgotPasswordCreateFormData = z.infer<typeof forgotPasswordCreateSchema>;
-export type ForgotPasswordResetFormData = z.infer<typeof forgotPasswordResetSchema>;
+export const resetPasswordSchema = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(8, { message: "Your password must be atleast 8 characters long" })
+      .max(64, {
+        message: "Your password can not be longer then 64 characters long",
+      }),
+    newPassword: password,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ForgotPasswordCreateFormData = z.infer<
+  typeof forgotPasswordCreateSchema
+>;
+export type ForgotPasswordResetFormData = z.infer<
+  typeof forgotPasswordResetSchema
+>;

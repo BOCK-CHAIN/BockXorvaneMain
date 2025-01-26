@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import Image from "next/image"
 import { ToggleTheme } from "../_components/ToggleTheme"
 import NavButton from "../_components/NavButton"
 import { usePathname, useRouter } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import { useAuthuser, useCurrentUser } from "@/hooks/use-auth-user"
+import {  useCurrentUser } from "@/hooks/use-auth-user"
 import { Button } from "../ui/button"
 import { signOut } from "@aws-amplify/auth"
 import { handleAuthError } from "@/hooks/errors"
@@ -17,15 +16,18 @@ import XorvaneLogo from "../_components/XorvaneLogo"
 export default function NavBar() {
   // const { user } = useUser();
   const { user } = useCurrentUser()
-  const [currentUser, setUser] = useState<Record<string, any>>()
+  const [currentUser, setUser] = useState<Record<string, any> | null>(null)
   const [activeSection, setActiveSection] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const queryClient = useQueryClient();
+
   useEffect(() => {
     if (user) {
       setUser(user)
+    }else{
+      setUser(null)
     }
   }, [user])
 
@@ -58,7 +60,7 @@ export default function NavBar() {
       await queryClient.invalidateQueries({
         queryKey: ["AuthUser"]
       })
-      router.refresh()
+      router.push('/')
     } catch (err) {
       handleAuthError(err as Error, router)
     }

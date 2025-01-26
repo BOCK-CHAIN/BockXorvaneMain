@@ -13,19 +13,24 @@ export const fetchUserData = async () => {
   if (!session.tokens) {
     return null;
   }
-
   const user = {
     ...(await getCurrentUser()),
     ...(await fetchUserAttributes()),
   };
-
   return user;
 };
 
 export const useAuthuser = () => {
   const query = useQuery({
     queryKey: ["AuthUser"],
-    queryFn: async () => await fetchUserData(),
+    queryFn: async () => {
+      try {
+        return await fetchUserData();
+      } catch (err) {
+        console.log(err);
+        return null;
+      }
+    },
     staleTime: 1000 * 60 * 5,
   });
 
@@ -36,10 +41,19 @@ export const useCurrentUser = () => {
   const query = useQuery({
     queryKey: ["User"],
     queryFn: async () => {
-      const authUser = await fetchUserData();
-      if (!authUser || !authUser.email) return null;
-      const user = await fetchCurrentUser(authUser.email);
-      return user;
+      try {
+        const session = await fetchAuthSession();
+        if (!session.tokens) {
+          return null;
+        }
+        const authUser = await fetchUserAttributes();
+        if (!authUser || !authUser.email) return null;
+        const user = await fetchCurrentUser(authUser.email);
+        return user;
+      } catch (err) {
+        console.log(err);
+        return null;
+      }
     },
   });
   return { ...query, user: query.data };

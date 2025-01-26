@@ -6,6 +6,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "profileImage" TEXT,
     "cognitoId" TEXT,
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -19,6 +20,8 @@ CREATE TABLE "Subscription" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "plan" "Plan" NOT NULL DEFAULT 'NONE',
+    "planId" TEXT,
+    "subscriptionId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

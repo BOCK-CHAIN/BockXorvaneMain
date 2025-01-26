@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import {
   autoSignIn,
   confirmSignUp,
-  getCurrentUser,
   resendSignUpCode,
   signUp,
 } from "aws-amplify/auth";
@@ -82,7 +81,7 @@ export const useSignUpForm = () => {
           throw new Error(sign.message);
         }
         await autoSignIn();
-        // console.log(sign);
+        toast.success("Sign up successful", { duration: 3000 });
         router.push("/dashboard");
         setLoading(false);
       } catch (error: any) {
