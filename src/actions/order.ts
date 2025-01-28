@@ -4,11 +4,12 @@ import prisma from "@/lib/prisma";
 export const saveOrder = async (
   userId: string,
   orderData:
-    | {
+     {
         amount: number;
         expiryDate: Date;
         orderId: string;
         paymentId: null;
+        startDate: Date;
         plan: "NONE" | "MONTHLY" | "YEARLY";
       }
     | {
