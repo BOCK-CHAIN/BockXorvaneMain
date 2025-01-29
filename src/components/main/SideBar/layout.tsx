@@ -31,7 +31,7 @@ export function SideBarLayout({ children }: LayoutProps) {
     if (user) {
       setUser(user)
       setLoading(false)
-    }else{
+    } else {
       setUser(null);
       setLoading(isLoading)
     }
