@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/lib/prisma";
+import prisma from "../lib/prisma";
 
 export const saveOrder = async (
   userId: string,
@@ -54,7 +54,7 @@ export const resetExpiredSubscriptions = async () => {
     const response = await prisma.subscription.updateMany({
       where: {
         expiryDate: {
-          lt: new Date(), 
+          lte: new Date(), 
         },
       },
       data: {
