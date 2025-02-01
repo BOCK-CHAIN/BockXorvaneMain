@@ -21,9 +21,6 @@ export async function authenticatedUser(context: NextServer.Context) {
           ...(await getCurrentUser(contextSpec)),
           isAdmin: false,
         };
-        const groups = session.tokens.accessToken.payload["cognito:groups"];
-        // @ts-expect-error
-        user.isAdmin = Boolean(groups && groups.includes("Admin"));
         return user;
       } catch (error) {
         console.log("Error in gettting user",error);

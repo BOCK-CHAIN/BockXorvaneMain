@@ -192,6 +192,7 @@ export function SubscriptionCard() {
                 }
               }}
               onError={(err) => {
+                console.log(err)
                 toast.error("An error occurred with the payment process.")
               }}
             />

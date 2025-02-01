@@ -62,8 +62,8 @@ export const useSignUpForm = () => {
 
       toast.success("Code sent successfully", { duration: 3000 });
       setLoading(false);
-    } catch (error: any) {
-      handleAuthError(error, router);
+    } catch (error) {
+      handleAuthError(error as Error, router);
       setLoading(false);
     }
   };
@@ -84,7 +84,7 @@ export const useSignUpForm = () => {
         toast.success("Sign up successful", { duration: 3000 });
         router.push("/dashboard");
         setLoading(false);
-      } catch (error: any) {
+      } catch (error) {
         const err = error as Error;
         handleAuthError(err, router);
         setLoading(false);

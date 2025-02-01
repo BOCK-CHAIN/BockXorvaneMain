@@ -30,11 +30,10 @@ export function SideBarLayout({ children }: LayoutProps) {
   useEffect(() => {
     if (user) {
       setUser(user)
-      setLoading(false)
     } else {
       setUser(null);
-      setLoading(isLoading)
     }
+    setLoading(isLoading)
   }, [user])
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export function SideBarLayout({ children }: LayoutProps) {
   }, [currentUser, authCurrentUser])
 
   useEffect(() => {
-    if (!loading && !currentUser) {
+    if (!loading && !user) {
       router.push('/')
     }
   }, [currentUser, loading, router])

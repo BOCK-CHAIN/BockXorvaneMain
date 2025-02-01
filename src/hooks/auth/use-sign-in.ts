@@ -42,7 +42,7 @@ export const useSignInForm = () => {
         });
         setLoading(false);
         router.push("/dashboard");
-      } catch (error: any) {
+      } catch (error) {
         const err = error as Error;
         handleAuthError(err, router);
         setLoading(false);
@@ -58,8 +58,8 @@ export const useSignInForm = () => {
       });
       toast.success("Code sent successfully", { duration: 3000 });
       setLoading(false);
-    } catch (error: any) {
-      handleAuthError(error, router);
+    } catch (error) {
+      handleAuthError(error as Error, router);
       setLoading(false);
     }
   };
@@ -91,8 +91,8 @@ export const useSignInForm = () => {
       router.refresh()
       router.push("/dashboard");
       setLoading(false);
-    } catch (error: any) {
-      handleAuthError(error, router);
+    } catch (error) {
+      handleAuthError(error as Error, router);
       setLoading(false);
     }
   };

@@ -23,13 +23,13 @@ const ButtonHandler = () => {
                     Submit
                 </Button>
                 <p className="text-gray-500 ">
-                    Didn't receive the code?
+                    Didn&apos;t receive the code?
                     <Button size={"lg"} onClick={() => handleResendCode(getValues("email"))} variant={'ghost'} className="hover:bg-transparent px-1 font-bold text-base text-gray-400">
                         Resend code
                     </Button>
                 </p>
                 <p className="text-gray-500 ">
-                    Don't have an account?
+                    Don&apos;t have an account?
                     <Link href="/auth/sign-up" className="font-bold text-gray-400 px-1 hover:text-gray-300">
                         Sign Up
                     </Link>
@@ -71,7 +71,7 @@ const ButtonHandler = () => {
                 </Link>
             </p>
             <p className="text-gray-500">
-                Don't have an account?
+                Don&apos;t have an account?
                 <Link href="/auth/sign-up" className="font-bold text-gray-400">
                     Sign Up
                 </Link>

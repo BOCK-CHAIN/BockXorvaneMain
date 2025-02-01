@@ -37,13 +37,9 @@ export default function ProfilePage() {
   const queryclient = useQueryClient()
   const router = useRouter()
 
-  if (!user) {
-    return null;
-  }
-
   const profileForm = useForm({
     resolver: zodResolver(profileSchema),
-    defaultValues: { name: user.name, email: user.email || "" },
+    defaultValues: { name: user?.name || "", email: user?.email || "" },
   });
 
   const passwordForm = useForm({
@@ -51,7 +47,12 @@ export default function ProfilePage() {
     defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" },
   });
 
-  const handleUpdateProfile = async (values: { name: string }) => {
+  
+  if (!user) {
+    return null;
+  }
+
+  const handleUpdateProfile = async (values: { name: string; email: string }) => {
     try {
       await updateUserAttributes({
         userAttributes: {

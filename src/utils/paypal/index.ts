@@ -1,24 +1,16 @@
 "use server";
 import {
   ApiError,
-  Client,
-  Environment,
   // LogLevel,
   OrdersController,
   // PaymentsController,
   CheckoutPaymentIntent,
 } from "@paypal/paypal-server-sdk";
+import { paypalclient } from "../paypalClient";
 
-const client = new Client({
-  clientCredentialsAuthCredentials: {
-    oAuthClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID as string,
-    oAuthClientSecret: process.env.PAYPAL_CLIENT_SECRET as string,
-  },
-  timeout: 0,
-  environment: Environment.Sandbox,
-});
 
-const ordersController = new OrdersController(client);
+
+const ordersController = new OrdersController(paypalclient);
 
 interface bodyProps {
   email: string;
@@ -94,7 +86,7 @@ export const captureOrder = async (orderID: string) => {
     };
   } catch (error) {
     if (error instanceof ApiError) {
-      throw new Error(error.message);
+      throw new Error((error as Error).message);
     }
     return {
       jsonResponse: JSON.parse((error as Error).message),

@@ -6,7 +6,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import queryclient from "@/lib/queryClient";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import ConfigureAmplifyClientSide from "../utils/amplify-cognito-config";
 import { Toaster } from "@/components/ui/sonner"
 
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <ConfigureAmplifyClientSide />
               {children}
               <Toaster richColors />
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </ThemeProvider>
         </>

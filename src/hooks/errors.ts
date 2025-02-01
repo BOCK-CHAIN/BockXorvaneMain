@@ -1,7 +1,7 @@
 'use client'
 import { toast } from "sonner";
 
-export const handleAuthError = (error: any, router: any) => {
+export const handleAuthError = (error: Error, router: any) => {
   let errorMessage = error.message || "An error occurred. Please try again.";
   let action = null;
   console.log(error)
