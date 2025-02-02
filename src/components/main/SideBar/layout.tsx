@@ -7,6 +7,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useAuthuser, useCurrentUser } from "@/hooks/use-auth-user"
 import { addCognitoIdtoDb } from "@/actions/auth"
 import Loader from '@/components/ui/loader/index'
+import { User } from "@/schemas/user.types"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,7 +22,9 @@ export function SideBarLayout({ children }: LayoutProps) {
   const { user, isLoading } = useCurrentUser()
   const [loading, setLoading] = useState(true)
   const [authCurrentUser, setAuthUser] = useState<Record<string, any> | null>(null)
-  const [currentUser, setUser] = useState<Record<string, any> | null>(null)
+  const [currentUser, setUser] = useState<User | null>(null)
+  const { theme } = useTheme()
+  const isLightMode = theme === "light"
 
   useEffect(() => {
     if (authUser) {
@@ -72,7 +77,7 @@ export function SideBarLayout({ children }: LayoutProps) {
         <Sidebar />
       </div>
       <div className="flex-1 overflow-auto">
-        <div className="p-4 pl-20">
+        <div className={cn("p-4 pl-20",isLightMode ? "text-gray-800" : "text-muted-foreground")}>
           {children}
         </div>
       </div>

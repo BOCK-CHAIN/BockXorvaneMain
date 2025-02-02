@@ -1,13 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native","debian-openssl-3.0.x"]
-  output   = "../generated/main"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  output        = "../generated/main"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  
 }
 
 model User {
@@ -19,6 +18,7 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   profileImage String?
+  transactions Transaction[]
   autoWork     AutoWork?
   subscription Subscription?
   webBuild     WebBuild?
@@ -26,17 +26,28 @@ model User {
 }
 
 model Subscription {
-  id         String    @id @default(cuid())
-  userId     String    @unique
-  plan       Plan      @default(NONE)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  orderId    String?
-  paymentId  String?
-  amount     Float?
-  startDate  DateTime?
-  expiryDate DateTime?
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String       @id @default(cuid())
+  userId        String       @unique
+  plan          Plan         @default(NONE)
+  transactionId String?     @unique
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  startDate     DateTime?
+  expiryDate    DateTime?
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Transaction {
+  id           String        @id @default(cuid())
+  orderId      String
+  paymentId    String?
+  amount       Float
+  userId       String
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Subscription Subscription?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model WebBuild {

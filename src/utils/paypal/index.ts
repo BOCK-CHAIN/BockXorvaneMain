@@ -8,8 +8,6 @@ import {
 } from "@paypal/paypal-server-sdk";
 import { paypalclient } from "../paypalClient";
 
-
-
 const ordersController = new OrdersController(paypalclient);
 
 interface bodyProps {
@@ -66,7 +64,7 @@ export const createOrder = async (body: bodyProps) => {
     };
   } catch (error) {
     return {
-      jsonResponse: JSON.parse((error as Error).message),
+      jsonResponse: (error as Error).message,
       httpStatusCode: 404,
     };
   }

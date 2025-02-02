@@ -1,37 +1,25 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import {  useCurrentUser } from "@/hooks/use-auth-user"
+import { useCurrentUser } from "@/hooks/use-auth-user"
 import Loader from "@/components/ui/loader/index"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-
-const products = [
-  {
-    name: "Xorvane Web Build",
-    description: "Build powerful web applications with ease.",
-    domain: "https://webbuild.xorvane.com",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    name: "Workman",
-    description: "Streamline your workflow and boost productivity.",
-    domain: "https://workman.xorvane.com",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    name: "AutoFlow",
-    description: "Automate your business processes effortlessly.",
-    domain: "https://autoflow.xorvane.com",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-]
+import Link from "next/link"
+import type { User } from "@/schemas/user.types"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { products } from "@/constants/products"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
 export default function DashboardPage() {
   const { user, isLoading } = useCurrentUser()
   const [loading, setLoading] = useState(true)
-  const [currentUser, setUser] = useState<Record<string, any> | null>(null)
+  const [currentUser, setUser] = useState<User | null>(null)
+
+  const { theme } = useTheme()
+  const isLightMode = theme === "light"
 
   useEffect(() => {
     if (user) {
@@ -50,32 +38,87 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 space-y-8">
+    <div
+      className={cn("container mx-auto py-8 px-4 space-y-8", isLightMode ? "text-gray-800" : "text-muted-foreground")}
+    >
       <h1 className="text-3xl font-bold">Welcome to Your Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <Card>
+        <Card className={cn(isLightMode ? "bg-white border-gray-200" : "")}>
           <CardHeader>
-            <CardTitle>Your Plan</CardTitle>
+            <CardTitle className={cn(isLightMode ? "text-gray-800" : "text-muted-foreground")}>Your Plan</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Current Plan: {currentUser?.plan || "No active plan"}</p>
-            <p>Days Left: {currentUser?.daysLeft || 0}</p>
+            <p className={cn(isLightMode ? "text-gray-600" : "")}>
+              Current Plan: {currentUser?.subscription?.plan || "No active plan"}
+            </p>
+            <p className={cn(isLightMode ? "text-gray-600" : "")}>
+              Expires On:{" "}
+              {currentUser?.subscription?.expiryDate instanceof Date
+                ? currentUser.subscription.expiryDate.toDateString()
+                : currentUser?.subscription?.expiryDate || "N/A"}
+            </p>
           </CardContent>
+          <CardFooter>
+            <Link href="/dashboard/subscription" passHref>
+              <Button
+                variant="outline"
+                className={cn("w-full", isLightMode ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "")}
+              >
+                Manage Subscription
+              </Button>
+            </Link>
+          </CardFooter>
         </Card>
-        <Card>
+        <Card className={cn("col-span-1 md:col-span-2", isLightMode ? "bg-white border-gray-200" : "")}>
           <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
+            <CardTitle className={cn(isLightMode ? "text-gray-800" : "text-muted-foreground")}>
+              Recent Transactions
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <p>No recent transactions</p>
+            {currentUser?.transactions ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className={cn(isLightMode ? "text-gray-600" : "")}>Order ID</TableHead>
+                    <TableHead className={cn(isLightMode ? "text-gray-600" : "")}>Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentUser.transactions.map((transaction) => (
+                    <TableRow key={transaction.orderId}>
+                      <TableCell className={cn(isLightMode ? "text-gray-800" : "")}>{transaction.orderId}</TableCell>
+                      <TableCell className={cn(isLightMode ? "text-gray-800" : "")}>
+                        ${transaction.amount.toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className={cn(isLightMode ? "text-gray-600" : "")}>No recent transactions</p>
+            )}
           </CardContent>
+          <CardFooter>
+            <Link href="/dashboard/transactions" passHref>
+              <Button
+                variant="outline"
+                className={cn("w-full", isLightMode ? "bg-gray-100 text-gray-800 hover:bg-gray-200" : "")}
+              >
+                View All Transactions
+              </Button>
+            </Link>
+          </CardFooter>
         </Card>
       </div>
 
       <h2 className="text-2xl font-bold mt-12 mb-6">Our Products</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <Card key={product.name} className="flex flex-col h-full">
+          <Card
+            key={product.name}
+            className={cn("flex flex-col h-full", isLightMode ? "bg-white border-gray-200" : "")}
+          >
             <CardHeader>
               <div className="w-full h-48 relative mb-4">
                 <Image
@@ -86,12 +129,17 @@ export default function DashboardPage() {
                   className="rounded-t-lg"
                 />
               </div>
-              <CardTitle>{product.name}</CardTitle>
-              <CardDescription>{product.description}</CardDescription>
+              <CardTitle className={cn(isLightMode ? "text-gray-800" : "")}>{product.name}</CardTitle>
+              <CardDescription className={cn(isLightMode ? "text-gray-600" : "")}>
+                {product.description}
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">{/* Add more product details here if needed */}</CardContent>
             <CardFooter>
-              <Button onClick={() => window.open(product.domain, "_blank")} className="w-full">
+              <Button
+                onClick={() => window.open(product.domain, "_blank")}
+                className={cn("w-full", isLightMode ? "bg-gray-800 text-white hover:bg-gray-700" : "")}
+              >
                 Go to {product.name}
               </Button>
             </CardFooter>

@@ -12,11 +12,12 @@ import { signOut } from "@aws-amplify/auth"
 import { handleAuthError } from "@/hooks/errors"
 import { useQueryClient } from "@tanstack/react-query"
 import XorvaneLogo from "../_components/XorvaneLogo"
+import { User } from "@/schemas/user.types"
 
 export default function NavBar() {
   // const { user } = useUser();
   const { user } = useCurrentUser()
-  const [currentUser, setUser] = useState<Record<string, any> | null>(null)
+  const [currentUser, setUser] = useState<User | null>(null)
   const [activeSection, setActiveSection] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()

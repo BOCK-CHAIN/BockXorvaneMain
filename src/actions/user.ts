@@ -10,8 +10,35 @@ export const fetchCurrentUser = async (email: string) => {
       where: {
         email,
       },
-      include: {
-        subscription: true,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        verified: true,
+        profileImage: true,
+        cognitoId: true,
+        subscription: {
+          select:{
+            plan: true,
+            startDate: true,
+            expiryDate: true,
+            transaction:{
+              select:{
+                paymentId: true,
+                orderId: true,
+                amount: true,
+              },
+            }
+          }
+        },
+        transactions:{
+          select:{
+            paymentId: true,
+            orderId: true,
+            amount: true,
+          },
+          take: 5,
+        },
         webBuild: true,
         autoWork: true,
         workMan: true,

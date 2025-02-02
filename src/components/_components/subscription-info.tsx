@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock } from "lucide-react"
+import type { User } from "@/schemas/user.types"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
-export default function SubscriptionInfo({ user }: { user: Record<string, any> }) {
+export default function SubscriptionInfo({ subscription }: { subscription: User["subscription"] }) {
   const [timeLeft, setTimeLeft] = useState("")
+  const { theme } = useTheme()
+  const isLightMode = theme === "light"
 
   useEffect(() => {
-    if (!user?.subscription?.expiryDate) return
+    if (!subscription?.expiryDate) return
 
     const updateTimeLeft = () => {
       const now = new Date()
-      const expiryDate = new Date(user.subscription.expiryDate)
+      const expiryDate = subscription.expiryDate ? new Date(subscription.expiryDate) : new Date()
       const timeDiff = expiryDate.getTime() - now.getTime()
 
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
@@ -34,29 +39,31 @@ export default function SubscriptionInfo({ user }: { user: Record<string, any> }
     const timer = setInterval(updateTimeLeft, 60000) // Update every minute
 
     return () => clearInterval(timer)
-  }, [user?.subscription?.expiryDate])
+  }, [subscription?.expiryDate])
 
-  if (!user?.subscription) return null
+  if (!subscription) return null
 
   return (
-    <Card className="w-full max-w-md h-fit" >
+    <Card className={cn("w-full max-w-md h-fit", isLightMode ? "bg-white border-gray-200" : "")}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Clock className="h-5 w-5" />
+        <CardTitle className={cn("flex items-center gap-2", isLightMode ? "text-gray-800" : "")}>
+          <Clock className={cn("h-5 w-5", isLightMode ? "text-gray-600" : "")} />
           Subscription Information
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p>
-          <strong>Plan:</strong> {user.subscription.plan}
+        <p className={cn(isLightMode ? "text-gray-700" : "")}>
+          <strong>Plan:</strong> {subscription.plan}
         </p>
-        <p>
-          <strong>Start Date:</strong> {new Date(user.subscription.startDate).toLocaleDateString()}
+        <p className={cn(isLightMode ? "text-gray-700" : "")}>
+          <strong>Start Date:</strong>{" "}
+          {subscription.startDate ? new Date(subscription.startDate).toLocaleDateString() : "N/A"}
         </p>
-        <p>
-          <strong>Expiry Date:</strong> {new Date(user.subscription.expiryDate).toLocaleDateString()}
+        <p className={cn(isLightMode ? "text-gray-700" : "")}>
+          <strong>Expiry Date:</strong>{" "}
+          {subscription.expiryDate ? new Date(subscription.expiryDate).toLocaleDateString() : "N/A"}
         </p>
-        <p>
+        <p className={cn(isLightMode ? "text-gray-700" : "")}>
           <strong>Time Left:</strong> {timeLeft}
         </p>
       </CardContent>

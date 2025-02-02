@@ -13,7 +13,7 @@ import {
 import { z } from "zod";
 import { toast } from "sonner";
 import { handleAuthError } from "../errors";
-import { onCompleteSignupPending, onCompleteUserSignUp } from "@/actions/auth";
+import {  onCompleteUserSignUp } from "@/actions/auth";
 
 export const useSignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,7 +42,6 @@ export const useSignUpForm = () => {
           autoSignIn: true,
         },
       });
-      await onCompleteSignupPending(email, name);
       setLoading(false);
       toast.success("Code sent successfully to your email", { duration: 3000 });
       onNext((prev) => prev + 1);

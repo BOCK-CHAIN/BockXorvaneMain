@@ -4,9 +4,9 @@ import { useState } from "react"
 import { useCurrentUser } from "@/hooks/use-auth-user"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { updateUserAttributes, updatePassword, type UpdatePasswordInput } from "aws-amplify/auth"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -21,136 +21,139 @@ import { removeProfileImage, updateName, updateUserProfileImage, uploadToS3 } fr
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address")
-});
+  email: z.string().email("Invalid email address"),
+})
 
 export default function ProfilePage() {
   const { user } = useCurrentUser()
   const [isFocused, setIsFocused] = useState(false)
-  const [profileImage, setProfileImage] = useState(`${user?.profileImage}?${Date.now()}` || "/placeholder-svg.png");
+  const [profileImage, setProfileImage] = useState(`${user?.profileImage}?${Date.now()}` || "/placeholder-svg.png")
   const [isBlurred, setIsBlurred] = useState(false)
-  const [isUploading, setIsUploading] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
   const queryclient = useQueryClient()
   const router = useRouter()
+  const { theme } = useTheme()
+  const isLightMode = theme === "light"
 
   const profileForm = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: { name: user?.name || "", email: user?.email || "" },
-  });
+  })
 
   const passwordForm = useForm({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" },
-  });
+  })
 
-  
   if (!user) {
-    return null;
+    return null
   }
 
   const handleUpdateProfile = async (values: { name: string; email: string }) => {
     try {
       await updateUserAttributes({
         userAttributes: {
-          name: values.name
-        }
-      });
-      await updateName(values.name, user.email);
+          name: values.name,
+        },
+      })
+      await updateName(values.name, user.email)
       await queryclient.invalidateQueries({
         queryKey: ["User"],
       })
-      toast.success("Profile updated successfully");
+      toast.success("Profile updated successfully")
     } catch (error) {
-      console.error("Error updating profile:", error);
-      handleAuthError(error as Error, router);
+      console.error("Error updating profile:", error)
+      handleAuthError(error as Error, router)
     }
-  };
+  }
 
   const handleResetPassword = async (values: UpdatePasswordInput) => {
     try {
-      await updatePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword });
-      toast.success("Password updated successfully");
-      passwordForm.reset();
+      await updatePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword })
+      toast.success("Password updated successfully")
+      passwordForm.reset()
     } catch (error) {
-      console.error("Error resetting password:", error);
+      console.error("Error resetting password:", error)
       if ((error as Error).name === "NotAuthorizedException") {
-        return toast.error("Incorrect password. Please try again.");
+        return toast.error("Incorrect password. Please try again.")
       }
-      handleAuthError(error as Error, router);
+      handleAuthError(error as Error, router)
     }
-  };
+  }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file: File | null | undefined = event.target.files?.[0];
-    if (!file) return;
+    const file: File | null | undefined = event.target.files?.[0]
+    if (!file) return
     try {
-      setIsUploading(true);
-      const s3Url = await uploadToS3(file.type, user.id);
+      setIsUploading(true)
+      const s3Url = await uploadToS3(file.type, user.id)
       if (!s3Url) {
-        toast.error("Failed to upload profile picture. Please try again.");
-        return;
+        toast.error("Failed to upload profile picture. Please try again.")
+        return
       }
       await axios.put(s3Url, file, {
         headers: {
           "Content-Type": file.type,
         },
-      });
-      const url = new URL(s3Url);
-      const imageUrl = url.origin + url.pathname;
+      })
+      const url = new URL(s3Url)
+      const imageUrl = url.origin + url.pathname
       if (!user.profileImage) {
         await updateUserProfileImage(user.email, imageUrl)
       }
-      setProfileImage(`${imageUrl}?${Date.now()}`);
+      setProfileImage(`${imageUrl}?${Date.now()}`)
       await queryclient.invalidateQueries({
         queryKey: ["User"],
       })
-      toast.success("Profile picture updated successfully");
+      toast.success("Profile picture updated successfully")
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Failed to upload profile picture. Please try again.");
+      console.error("Error uploading image:", error)
+      toast.error("Failed to upload profile picture. Please try again.")
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  };
+  }
 
   const handleRemovePhoto = async () => {
-    if (isUploading) return;
+    if (isUploading) return
     if (!profileImage) {
-      toast.info("No profile image to remove");
+      toast.info("No profile image to remove")
     }
     try {
-      setIsUploading(true);
-      const response = await removeProfileImage(user.id);
+      setIsUploading(true)
+      const response = await removeProfileImage(user.id)
 
       if (response.error) {
-        console.error(response.error);
-        toast.error("Error removing profile image");
+        console.error(response.error)
+        toast.error("Error removing profile image")
       } else {
-        setProfileImage("/placeholder-svg.png");
+        setProfileImage("/placeholder-svg.png")
         await queryclient.invalidateQueries({
           queryKey: ["User"],
         })
-        toast.success("Profile image removed successfully");
+        toast.success("Profile image removed successfully")
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Error removing profile image");
+      console.error(error)
+      toast.error("Error removing profile image")
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className={cn("p-8 max-w-6xl mx-auto", isLightMode ? "text-gray-800" : "")}>
       <h1 className="text-3xl font-bold mb-8">Your Profile</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="h-fit">
+        <Card className={cn("h-fit", isLightMode ? "bg-white border-gray-200" : "")}>
           <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
+            <CardTitle className={cn(isLightMode ? "text-gray-800" : "")}>Profile Information</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...profileForm}>
@@ -160,26 +163,37 @@ export default function ProfilePage() {
                     <AvatarImage src={`${profileImage}`} alt="Profile Image" />
                     <AvatarFallback className="text-2xl">{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  {user.profileImage ?
+                  {user.profileImage ? (
                     <Dialog onOpenChange={(open) => setDialogOpen(open)} open={dialogOpen}>
                       <DialogTrigger asChild>
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity cursor-pointer rounded-full">
                           <Camera className="text-white w-8 h-8" />
                         </div>
                       </DialogTrigger>
-                      <DialogContent className="max-w-md p-6 rounded-2xl shadow-lg" >
+                      <DialogContent
+                        className={cn("max-w-md p-6 rounded-2xl shadow-lg", isLightMode ? "bg-white" : "")}
+                      >
                         <DialogHeader>
-                          <DialogTitle className="text-lg font-semibold text-gray-100">Update Profile Picture</DialogTitle>
+                          <DialogTitle
+                            className={cn("text-lg font-semibold", isLightMode ? "text-gray-800" : "text-primary")}
+                          >
+                            Update Profile Picture
+                          </DialogTitle>
                         </DialogHeader>
                         <div className="flex flex-col space-y-6">
-                          <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-all text-gray-200">
+                          <label
+                            className={cn(
+                              "flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:border-gray-400 transition-all",
+                              isLightMode ? "border-gray-300 text-gray-600" : "border-gray-600 text-muted-foreground",
+                            )}
+                          >
                             <input
                               type="file"
                               accept="image/*"
                               className="hidden"
-                              onChange={(e)=>{
-                                handleImageUpload(e);
-                                setDialogOpen(false);
+                              onChange={(e) => {
+                                handleImageUpload(e)
+                                setDialogOpen(false)
                               }}
                               disabled={isUploading}
                             />
@@ -189,10 +203,16 @@ export default function ProfilePage() {
                             <div className="flex flex-col items-center space-y-4">
                               <Button
                                 type="button"
-                                onClick={()=>{handleRemovePhoto(); setDialogOpen(false)}}
+                                onClick={() => {
+                                  handleRemovePhoto()
+                                  setDialogOpen(false)
+                                }}
                                 disabled={isUploading}
                                 variant="destructive"
-                                className="bg-red-500 hover:bg-red-600 text-white"
+                                className={cn(
+                                  "bg-red-500 hover:bg-red-600 text-white",
+                                  isLightMode ? "bg-red-600 hover:bg-red-700" : "",
+                                )}
                               >
                                 Remove current picture
                               </Button>
@@ -200,7 +220,8 @@ export default function ProfilePage() {
                           )}
                         </div>
                       </DialogContent>
-                    </Dialog> :
+                    </Dialog>
+                  ) : (
                     <>
                       <label
                         htmlFor="profileImageInput"
@@ -217,20 +238,17 @@ export default function ProfilePage() {
                         />
                       </label>
                     </>
-                  }
+                  )}
                 </div>
               </div>
-              <form
-                className="space-y-4"
-                onSubmit={profileForm.handleSubmit(handleUpdateProfile)}
-              >
+              <form className="space-y-4" onSubmit={profileForm.handleSubmit(handleUpdateProfile)}>
                 <FormField
                   name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className={cn(isLightMode ? "bg-gray-100 text-gray-800" : "")} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -242,36 +260,40 @@ export default function ProfilePage() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled />
+                        <Input {...field} disabled className={cn(isLightMode ? "bg-gray-100 text-gray-800" : "")} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className={cn("w-full", isLightMode ? "bg-gray-800 text-white hover:bg-gray-700" : "")}
+                >
                   Update Profile
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={cn("h-fit", isLightMode ? "bg-white border-gray-200" : "")}>
           <CardHeader>
-            <CardTitle>Reset Password</CardTitle>
+            <CardTitle className={cn(isLightMode ? "text-gray-800" : "")}>Reset Password</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...passwordForm}>
-              <form
-                onSubmit={passwordForm.handleSubmit(handleResetPassword)}
-                className="space-y-4"
-              >
+              <form onSubmit={passwordForm.handleSubmit(handleResetPassword)} className="space-y-4">
                 <FormField
                   name="oldPassword"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Old Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <Input
+                          type="password"
+                          {...field}
+                          className={cn(isLightMode ? "bg-gray-100 text-gray-800" : "")}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -288,21 +310,32 @@ export default function ProfilePage() {
                           type="password"
                           onFocus={() => setIsFocused(true)}
                           onBlur={() => {
-                            setIsFocused(false);
-                            setIsBlurred(true);
+                            setIsFocused(false)
+                            setIsBlurred(true)
                           }}
+                          className={cn(isLightMode ? "bg-gray-100 text-gray-800" : "")}
                         />
                       </FormControl>
                       <FormMessage />
                       {isFocused && (
                         <ul className="mt-2 space-y-1 transition-opacity duration-200">
                           {passwordRequirements.map((requirement) => {
-                            const isMet = requirement.test(passwordForm.watch("newPassword") || "");
+                            const isMet = requirement.test(passwordForm.watch("newPassword") || "")
                             return (
                               <li
                                 key={requirement.id}
-                                className={`flex items-center text-sm ${isMet ? "text-green-400" : isBlurred ? "text-red-500" : "text-gray-400"
-                                  }`}
+                                className={cn(
+                                  "flex items-center text-sm",
+                                  isMet
+                                    ? "text-green-600"
+                                    : isBlurred
+                                      ? isLightMode
+                                        ? "text-red-600"
+                                        : "text-red-500"
+                                      : isLightMode
+                                        ? "text-gray-600"
+                                        : "text-gray-400",
+                                )}
                               >
                                 {isMet ? (
                                   <Check className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -311,7 +344,7 @@ export default function ProfilePage() {
                                 )}
                                 <span>{requirement.label}</span>
                               </li>
-                            );
+                            )
                           })}
                         </ul>
                       )}
@@ -324,13 +357,20 @@ export default function ProfilePage() {
                     <FormItem>
                       <FormLabel>Confirm New Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} />
+                        <Input
+                          type="password"
+                          {...field}
+                          className={cn(isLightMode ? "bg-gray-100 text-gray-800" : "")}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className={cn("w-full", isLightMode ? "bg-gray-800 text-white hover:bg-gray-700" : "")}
+                >
                   Reset Password
                 </Button>
               </form>
@@ -339,7 +379,6 @@ export default function ProfilePage() {
         </Card>
       </div>
     </div>
-  );
-
+  )
 }
 

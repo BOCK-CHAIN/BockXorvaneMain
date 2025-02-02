@@ -3,25 +3,42 @@ import prisma from "../lib/prisma";
 
 export const saveOrder = async (
   userId: string,
-  orderData:
-     {
-        amount: number;
-        expiryDate: Date;
-        orderId: string;
-        paymentId: null;
-        startDate: Date;
-        plan: "NONE" | "MONTHLY" | "YEARLY";
-      }
-    | {
-        paymentId: string;
-      }
+  orderData: {
+    transaction: {
+      orderId: string;
+      amount: number;
+    };
+    plan: "NONE" | "MONTHLY" | "YEARLY";
+    startDate: Date;
+    expiryDate: Date;
+  }
 ) => {
   try {
+    const subscription = await prisma.subscription.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+    if (!subscription) {
+      return { error: "Subscription not found." };
+    }
+    const transaction = await prisma.transaction.create({
+      data: {
+        userId: userId,
+        orderId: orderData.transaction.orderId,
+        amount: orderData.transaction.amount,
+      },
+    });
     const response = await prisma.subscription.update({
       where: {
         userId: userId,
       },
-      data: orderData,
+      data: {
+        transactionId: transaction.id,
+        plan: orderData.plan,
+        startDate: orderData.startDate,
+        expiryDate: orderData.expiryDate,
+      },
     });
 
     return { response };
@@ -31,39 +48,59 @@ export const saveOrder = async (
   }
 };
 
-export const deleteExpiredOrders = async () => {
+export const savePaymentToDb = async (userId: string, paymentId: string) => {
   try {
-    const response = await prisma.subscription.deleteMany({
+    const response = await prisma.subscription.update({
       where: {
-        expiryDate: {
-          lt: new Date(), // Delete where expiryDate is in the past
+        userId: userId,
+      },
+      data: {
+        transaction: {
+          update: {
+            paymentId: paymentId,
+          },
         },
       },
     });
 
-    console.log(`Deleted ${response.count} expired orders.`);
-    return { deleted: response.count };
+    return { response };
   } catch (error) {
-    console.error("Error deleting expired orders:", error);
+    console.error(error);
     return { error };
   }
 };
+
+// export const deleteExpiredOrders = async () => {
+//   try {
+//     const response = await prisma.subscription.deleteMany({
+//       where: {
+//         expiryDate: {
+//           lt: new Date(), // Delete where expiryDate is in the past
+//         },
+//       },
+//     });
+
+//     console.log(`Deleted ${response.count} expired orders.`);
+//     return { deleted: response.count };
+//   } catch (error) {
+//     console.error("Error deleting expired orders:", error);
+//     return { error };
+//   }
+// };
 
 export const resetExpiredSubscriptions = async () => {
   try {
     const response = await prisma.subscription.updateMany({
       where: {
         expiryDate: {
-          lte: new Date(), 
+          lte: new Date(),
         },
       },
       data: {
-        orderId: null,
-        paymentId: null,
-        amount: null,
+        transactionId: null,
+        plan: "NONE",
         startDate: null,
         expiryDate: null,
-        plan: "NONE",
       },
     });
 
@@ -74,3 +111,18 @@ export const resetExpiredSubscriptions = async () => {
     return { error };
   }
 };
+
+export const fetchTransactions = async (userId: string) => {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return transactions;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
