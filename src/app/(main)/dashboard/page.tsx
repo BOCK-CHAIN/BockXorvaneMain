@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const { user, isLoading } = useCurrentUser()
   const [loading, setLoading] = useState(true)
   const [currentUser, setUser] = useState<User | null>(null)
+  console.log(user)
 
   const { theme } = useTheme()
   const isLightMode = theme === "light"
@@ -43,7 +44,7 @@ export default function DashboardPage() {
     >
       <h1 className="text-3xl font-bold">Welcome to Your Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <Card className={cn(isLightMode ? "bg-white border-gray-200" : "")}>
+        <Card className={cn("h-fit",isLightMode ? "bg-white border-gray-200" : "")}>
           <CardHeader>
             <CardTitle className={cn(isLightMode ? "text-gray-800" : "text-muted-foreground")}>Your Plan</CardTitle>
           </CardHeader>
@@ -54,7 +55,7 @@ export default function DashboardPage() {
             <p className={cn(isLightMode ? "text-gray-600" : "")}>
               Expires On:{" "}
               {currentUser?.subscription?.expiryDate instanceof Date
-                ? currentUser.subscription.expiryDate.toDateString()
+                ? currentUser.subscription.expiryDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
                 : currentUser?.subscription?.expiryDate || "N/A"}
             </p>
           </CardContent>
@@ -82,6 +83,7 @@ export default function DashboardPage() {
                   <TableRow>
                     <TableHead className={cn(isLightMode ? "text-gray-600" : "")}>Order ID</TableHead>
                     <TableHead className={cn(isLightMode ? "text-gray-600" : "")}>Amount</TableHead>
+                    <TableHead className={cn(isLightMode ? "text-gray-600" : "")}>On</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -90,6 +92,9 @@ export default function DashboardPage() {
                       <TableCell className={cn(isLightMode ? "text-gray-800" : "")}>{transaction.orderId}</TableCell>
                       <TableCell className={cn(isLightMode ? "text-gray-800" : "")}>
                         ${transaction.amount.toFixed(2)}
+                      </TableCell>
+                      <TableCell className={cn(isLightMode ? "text-gray-800" : "")}>
+                        {transaction.createdAt ? new Date(transaction.createdAt).toLocaleString() : "N/A"}
                       </TableCell>
                     </TableRow>
                   ))}

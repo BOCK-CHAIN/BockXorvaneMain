@@ -60,7 +60,7 @@ export default function SubscriptionInfo({ subscription }: { subscription: User[
           {subscription.startDate ? new Date(subscription.startDate).toLocaleDateString() : "N/A"}
         </p>
         <p className={cn(isLightMode ? "text-gray-700" : "")}>
-          <strong>Expiry Date:</strong>{" "}
+          <strong>Expires Before:</strong>{" "}
           {subscription.expiryDate ? new Date(subscription.expiryDate).toLocaleDateString() : "N/A"}
         </p>
         <p className={cn(isLightMode ? "text-gray-700" : "")}>

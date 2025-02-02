@@ -118,6 +118,9 @@ export const fetchTransactions = async (userId: string) => {
       where: {
         userId: userId,
       },
+      orderBy:{
+        createdAt: 'desc'
+      }
     });
 
     return transactions;

@@ -27,6 +27,7 @@ export const fetchCurrentUser = async (email: string) => {
                 paymentId: true,
                 orderId: true,
                 amount: true,
+                createdAt: true,
               },
             }
           }
@@ -36,6 +37,7 @@ export const fetchCurrentUser = async (email: string) => {
             paymentId: true,
             orderId: true,
             amount: true,
+            createdAt: true,
           },
           take: 5,
         },

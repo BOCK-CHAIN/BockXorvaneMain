@@ -6,6 +6,7 @@ export interface Transaction {
   paymentId?: string | null;
   orderId: string;
   amount: number;
+  createdAt? : Date;
 }
 
 interface Subscription {

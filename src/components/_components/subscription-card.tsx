@@ -21,7 +21,7 @@ const benefits = ["WebBuild", "AutoWork", "WorkMan"]
 export function SubscriptionCard() {
   const { user } = useCurrentUser()
   const [currentUser, setCurrentUser] = useState<User | null>()
-  const [selectedPlan, setSelectedPlan] = useState(plans[1]) // Default to yearly
+  const [selectedPlan, setSelectedPlan] = useState(plans[1]) 
   const [showPayPalButtons, setShowPayPalButtons] = useState(false)
   const [showPlans, setShowPlans] = useState(false)
   const query = useQueryClient()
@@ -167,7 +167,6 @@ export function SubscriptionCard() {
                     price: selectedPlan.name === "Yearly" ? selectedPlan.yearlyPrice! : selectedPlan.price!,
                     description: `Subscription to ${selectedPlan.name} Plan`,
                   })
-                  console.log(response)
 
                   if (response.jsonResponse.id) {
                     return response.jsonResponse.id
@@ -191,6 +190,8 @@ export function SubscriptionCard() {
                     startDate: new Date(),
                     expiryDate: new Date(new Date().setMonth(new Date().getMonth() + selectedPlan.durationInMonths)),
                   }
+                  orderData.expiryDate.setDate(orderData.expiryDate.getDate() + 1);
+                  orderData.expiryDate.setHours(0, 0, 0, 0);
                   await saveOrderToDatabase(orderData)
 
                   const response = await captureOrder(data.orderID)
