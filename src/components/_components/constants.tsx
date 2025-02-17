@@ -131,6 +131,14 @@ export const FooterItems = [
         comp: "Terms of Use",
         href: "/terms-of-use",
       },
+      {
+        comp: "Refund and Cancellation Policy",
+        href: "/refund-and-cancellation",
+      },
+      {
+        comp: "Shipping And Delivery Policy",
+        href: "/shipping-and-delivery",
+      }
     ],
   }
 ];

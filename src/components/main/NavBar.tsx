@@ -6,7 +6,7 @@ import { ToggleTheme } from "../_components/ToggleTheme"
 import NavButton from "../_components/NavButton"
 import { usePathname, useRouter } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import {  useCurrentUser } from "@/hooks/use-auth-user"
+import { useCurrentUser } from "@/hooks/use-auth-user"
 import { Button } from "../ui/button"
 import { signOut } from "@aws-amplify/auth"
 import { handleAuthError } from "@/hooks/errors"
@@ -27,7 +27,7 @@ export default function NavBar() {
   useEffect(() => {
     if (user) {
       setUser(user)
-    }else{
+    } else {
       setUser(null)
     }
   }, [user])
@@ -106,20 +106,24 @@ export default function NavBar() {
           <div className="flex justify-center items-center md:gap-2 lg:gap-8 py-2">
             <XorvaneLogo />
             <ul className="hidden md:flex justify-center items-center font-medium text-[#09090bcc] dark:text-[#fafafacc]">
-              {["hero", "services", "pricing", "footer"].map((section) => (
+              {["hero", "services", "pricing", "Contact Us"].map((section) => (
                 <li
                   key={section}
                   className={cn(
                     "px-3 py-2 rounded-full dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer",
                     activeSection === section ? "bg-zinc-200 dark:bg-accent text-accent-foreground" : "",
                   )}
-                  onClick={() => scrollToSection(section)}
+                  onClick={() => {
+                    if (section === "Contact Us") {
+                      router.push('/contact-us')
+                      return;
+                    }
+                    scrollToSection(section)
+                  }}
                 >
                   {section === "hero"
                     ? "Home"
-                    : section === "footer"
-                      ? "Contact Us"
-                      : section.charAt(0).toUpperCase() + section.slice(1)}
+                    : section.charAt(0).toUpperCase() + section.slice(1)}
                 </li>
               ))}
             </ul>
@@ -160,7 +164,7 @@ export default function NavBar() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50 min-h-fit bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="pt-16 pb-6 px-4 space-y-4">
-            {["hero", "services", "pricing", "footer"].map((id) => (
+            {["hero", "services", "pricing", "Contact Us"].map((id) => (
               <button
                 key={id}
                 className={cn(
@@ -169,9 +173,12 @@ export default function NavBar() {
                     ? "bg-zinc-200 dark:bg-accent text-accent-foreground"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
                 )}
-                onClick={() => scrollToSection(id)}
+                onClick={() => { if(id==="Contact Us"){
+                  router.push('/contact-us')
+                  return;
+                } scrollToSection(id) }}
               >
-                {id === "hero" ? "Home" : id === "footer" ? "Contact Us" : id.charAt(0).toUpperCase() + id.slice(1)}
+                {id === "hero" ? "Home" : id.charAt(0).toUpperCase() + id.slice(1)}
               </button>
             ))}
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
