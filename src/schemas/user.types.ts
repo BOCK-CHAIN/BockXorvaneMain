@@ -1,5 +1,5 @@
-import { Plan as subplan, Prisma } from "../../prisma/generated/main";
-
+import prisma from "@/lib/prisma";
+import { Plan as subplan } from "@prisma/client";
 type Plan  = subplan
 
 export interface Transaction {

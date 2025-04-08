@@ -33,7 +33,7 @@ export default function Hero() {
             video sharing, custom LMS platforms, AI-powered chatbots, and
             more. Scale smarter, not harder.
           </motion.p>
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -53,7 +53,7 @@ export default function Hero() {
             >
               Learn More
             </Button>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-gray-900 pointer-events-none"></div>

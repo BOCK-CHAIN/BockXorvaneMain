@@ -48,20 +48,24 @@ export default function Footer() {
                 Follow Us
               </p>
               <div className="flex space-x-4">
-                {socialMedia.map((item, index) => (
-                  <Link
-                    key={index}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn("flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-800 hover:text-gray-200 dark:bg-gray-800 dark:text-white  dark:hover:text-gray-800 transition duration-300 ease-in-out transform hover:scale-110",
-                      `${item.color}`
-                    )}
-                  >
-                    {item.icon}
-                    <span className="sr-only">{item.name}</span>
-                  </Link>
-                ))}
+                {socialMedia.map((item, index) => {
+                  const Icon = item.icon; // Get the component
+                  return (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-800 hover:text-gray-200 dark:bg-gray-800 dark:text-white dark:hover:text-gray-800 transition duration-300 ease-in-out transform hover:scale-110",
+                        item.color
+                      )}
+                    >
+                      <Icon className="w-5 h-5" />
+                      <span className="sr-only">{item.name}</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>

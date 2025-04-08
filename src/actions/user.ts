@@ -18,22 +18,22 @@ export const fetchCurrentUser = async (email: string) => {
         profileImage: true,
         cognitoId: true,
         subscription: {
-          select:{
+          select: {
             plan: true,
             startDate: true,
             expiryDate: true,
-            transaction:{
-              select:{
+            transaction: {
+              select: {
                 paymentId: true,
                 orderId: true,
                 amount: true,
                 createdAt: true,
               },
-            }
-          }
+            },
+          },
         },
-        transactions:{
-          select:{
+        transactions: {
+          select: {
             paymentId: true,
             orderId: true,
             amount: true,
@@ -122,7 +122,7 @@ export const updateUserProfileImage = async (
 
 export const removeProfileImage = async (id: string) => {
   try {
-     await prisma.user.update({
+    await prisma.user.update({
       where: {
         id,
       },
