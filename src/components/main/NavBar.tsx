@@ -106,7 +106,7 @@ export default function NavBar() {
           <div className="flex justify-center items-center md:gap-2 lg:gap-8 py-2">
             <XorvaneLogo />
             <ul className="hidden md:flex justify-center items-center font-medium text-[#09090bcc] dark:text-[#fafafacc]">
-              {["hero", "services", "pricing", "Contact Us"].map((section) => (
+              {["hero",  "pricing", "Contact Us"].map((section) => (
                 <li
                   key={section}
                   className={cn(
@@ -129,7 +129,7 @@ export default function NavBar() {
             </ul>
           </div>
           <div className="flex gap-6 items-center justify-center">
-            <div className="hidden md:flex justify-center items-center gap-3">
+            {/* <div className="hidden md:flex justify-center items-center gap-3">
               {!currentUser ? (
                 <>
                   <NavButton text={"Get Started"} variant="default" href={"/auth/sign-up"} />
@@ -146,7 +146,7 @@ export default function NavBar() {
                 </>
               )}
               <ToggleTheme />
-            </div>
+            </div> */}
             <button
               className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -164,7 +164,7 @@ export default function NavBar() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50 min-h-fit bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="pt-16 pb-6 px-4 space-y-4">
-            {["hero", "services", "pricing", "Contact Us"].map((id) => (
+            {["hero","pricing", "Contact Us"].map((id) => (
               <button
                 key={id}
                 className={cn(
@@ -181,7 +181,7 @@ export default function NavBar() {
                 {id === "hero" ? "Home" : id.charAt(0).toUpperCase() + id.slice(1)}
               </button>
             ))}
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            {/* <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-3">
                 {!currentUser ? (
                   <>
@@ -197,6 +197,8 @@ export default function NavBar() {
                 )}
                 <ToggleTheme />
               </div>
+            </div> */}
+            <div>
             </div>
           </div>
           <Button

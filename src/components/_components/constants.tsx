@@ -2,45 +2,53 @@ import { Laptop, Zap, Users } from 'lucide-react';
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
 
-export const prices = [
-    {
-      id: "1",
-      interval: "month",
-      currency: "INR",
-      unit_amount: 20000,
-    },
-    {
-      id: "2",
-      interval: "year",
-      currency: "INR",
-      unit_amount: 200000,
-    }
-];
+// export const prices = [
+//   {
+//     id: "1",
+//     interval: "month",
+//     currency: "INR",
+//     unit_amount: 20000,
+//   },
+//   {
+//     id: "2",
+//     interval: "year",
+//     currency: "INR",
+//     unit_amount: 200000,
+//   }
+// ];
 
-export const services = [
+export const services =[
   {
-    id: "1",
-    title: "WebBuild",
-    description: "Design and launch websites with ease.",
-    webUrl: "http://localhost:3002",
+    id: "webbuild",
+    name: "WebBuild",
+    description: "Custom websites built fast and beautifully.",
+    monthly_price: Number(process.env.NEXT_PUBLIC_WEBBUILD_MONTHLY),
+    yearly_price: Number(process.env.NEXT_PUBLIC_WEBBUILD_YEARLY),
+    webUrl: process.env.NEXT_PUBLIC_WEBBUILD_URL,
     icon: Laptop,
-    features: ["Drag-and-drop editor", "Responsive designs", "Team integration"],
+    features: [
+      "Drag & drop funnel builder",
+      "User access control",
+      "Marketing integrations",
+    ],
+    gradientColor: "from-blue-600 via-purple-600 to-pink-600",
+    textColor: "text-blue-400",
   },
   {
-    id: "2",
-    title: "AutoWork",
-    description: "Automate your workflows effortlessly.",
-    webUrl: "http://localhost:3001",
-    icon: Zap,
-    features: ["Unlimited workflows", "AI-powered suggestions", "Advanced analytics"],
-  },
-  {
-    id: "3",
-    title: "WorkMan",
-    description: "Collaborate and manage projects seamlessly.",
-    webUrl: "http://localhost:3003",
+    id: "workman",
+    name: "Workman",
+    description: "Manage projects and teams effortlessly.",
+    monthly_price: Number(process.env.NEXT_PUBLIC_WORKMAN_MONTHLY),
+    yearly_price: Number(process.env.NEXT_PUBLIC_WORKMAN_YEARLY),
+    webUrl: process.env.NEXT_PUBLIC_WORKMAN_URL,
     icon: Users,
-    features: ["Team collaboration", "Video conferencing", "Document version control"],
+    features: [
+      "Unlimited workspaces",
+      "Video storage & annotations",
+      "Team collaboration",
+    ],
+    gradientColor: "from-green-600 via-teal-500 to-cyan-500",
+    textColor: "text-green-400",
   },
 ];
 
@@ -146,33 +154,34 @@ export const FooterItems = [
 export const socialMedia = [
   {
     name: "Instagram",
-    icon: <FaInstagram className="w-5 h-5" />,
+    icon: FaInstagram,
     href: "https://www.instagram.com/bockbharath",
-    color: "hover:bg-gradient-to-r hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#FDCB58] dark:hover:from-[#833AB4] dark:hover:via-[#B71A1A] dark:hover:to-[#CBAA44]"
+    color:
+      "hover:bg-gradient-to-r hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#FDCB58] dark:hover:from-[#833AB4] dark:hover:via-[#B71A1A] dark:hover:to-[#CBAA44]",
   },
   {
     name: "X",
-    icon: <FaXTwitter className="w-5 h-5" />,
+    icon: FaXTwitter,
     href: "https://x.com/BockBH",
-    color: "hover:bg-[#1DA1F2] dark:hover:bg-[#1DA1F2]", 
+    color: "hover:bg-[#1DA1F2] dark:hover:bg-[#1DA1F2]",
   },
   {
     name: "LinkedIn",
-    icon: <FaLinkedin className="w-5 h-5" />,
+    icon: FaLinkedin,
     href: "https://www.linkedin.com/company/bockbharath/",
-    color: "hover:bg-[#0A66C2] dark:hover:bg-[#0A66C2]", 
+    color: "hover:bg-[#0A66C2] dark:hover:bg-[#0A66C2]",
   },
   {
     name: "YouTube",
-    icon: <FaYoutube className="w-5 h-5" />,
+    icon: FaYoutube,
     href: "https://www.youtube.com/@bockbharath",
-    color: "hover:bg-[#FF0000] dark:hover:bg-[#FF0000]", 
+    color: "hover:bg-[#FF0000] dark:hover:bg-[#FF0000]",
   },
   {
     name: "Facebook",
-    icon: <FaFacebook className="w-5 h-5" />,
+    icon: FaFacebook,
     href: "https://www.facebook.com/bockbharath/",
-    color: "hover:bg-[#1877F2] dark:hover:bg-[#1877F2]", 
+    color: "hover:bg-[#1877F2] dark:hover:bg-[#1877F2]",
   },
 ];
 
