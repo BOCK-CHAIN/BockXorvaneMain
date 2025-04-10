@@ -70,26 +70,7 @@ const FormGenerator = ({
             )}
           /> :
             <>
-              {isFocused &&
-                <ul className="mt-2 space-y-1 transition-opacity duration-200 ">
-                  {passwordRequirements.map((requirement) => {
-                    const isMet = requirement.test(watch ? watch(name) : "")
-                    return (
-                      <li
-                        key={requirement.id}
-                        className={`flex items-center text-sm ${isMet ? "text-green-400" : isBlurred?"text-red-400":"text-gray-400"}`}
-                      >
-                        {isMet ? (
-                          <Check className="w-4 h-4 mr-2 flex-shrink-0" />
-                        ) : (
-                          <X className="w-4 h-4 mr-2 flex-shrink-0" />
-                        )}
-                        <span>{requirement.label}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              }
+              
             </>
           }
         </Label>
